@@ -1,0 +1,4 @@
+Marquee-SDK==0.1.0
+click==1.1
+wsgiref==0.1.2
+Jinja2==2.7.2

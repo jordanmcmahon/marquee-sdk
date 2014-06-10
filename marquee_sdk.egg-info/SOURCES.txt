@@ -1,0 +1,10 @@
+bin/marquee
+marquee_sdk/__init__.py
+marquee_sdk/config.py
+marquee_sdk/utils.py
+marquee_sdk.egg-info/PKG-INFO
+marquee_sdk.egg-info/SOURCES.txt
+marquee_sdk.egg-info/dependency_links.txt
+marquee_sdk.egg-info/requires.txt
+marquee_sdk.egg-info/top_level.txt
+marquee_sdk/templates/_Vagrantfile

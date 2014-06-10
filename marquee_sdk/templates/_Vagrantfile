@@ -1,0 +1,15 @@
+VAGRANTFILE_API_VERSION = '2'
+
+BOX     = 'trusty64'
+BOX_URL = 'http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box       = BOX
+    config.vm.box_url   = BOX_URL
+
+    config.vm.define 'development' do |dev|
+        dev.vm.hostname = '{{ project_name }}-dev'
+        dev.vm.network 'private_network', ip: '{{ private_ip }}'
+    end
+
+end
