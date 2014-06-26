@@ -15,6 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.provision :ansible do |ansible|
         ansible.inventory_path  = 'ops/inventory/development'
+        ansible.extra_vars      = 'ops/vars/development'
         ansible.playbook        = 'ops/development.yml'
     end
 

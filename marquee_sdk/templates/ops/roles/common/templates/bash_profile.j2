@@ -17,6 +17,6 @@ workon {{ project_name }}
 cd /srv/{{ project_name }}
 
 # Node setup
-NODE="{{ home_dir }}/local/node"
+NODE="{% raw %}{{ home_dir }}{% endraw %}/local/node"
 NODE_PATH="/usr/local/lib/node_modules" 
 PATH=$PATH:$NODE/bin:$NODE/lib/node_modules

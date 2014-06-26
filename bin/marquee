@@ -48,19 +48,12 @@ def startproject(project_name):
         for d in dirs:
             os.makedirs(os.path.join(PROJECT_PATH, relative_path, d))
         for f in files:
-            click.echo(os.path.join(TEMPLATE_DIR, relative_path, f))
             copy_template(
                 src          = os.path.join(relative_path, f),
                 dest         = os.path.join(PROJECT_PATH, relative_path, f),
                 project_name = project_name,
                 private_ip   = private_ip,
             )
-
-        click.echo(root)
-        click.echo(dirs)
-        click.echo(files)
-        click.echo('---')
-
     # Copy project files
         
 
@@ -71,23 +64,14 @@ def startproject(project_name):
     #)
 
     exit_message = textwrap.dedent("""
-    ################################
-    ## Marquee Runtime Generated! ##
-    ################################
+    # Marquee Runtime Generated!
 
-    Just a few things left to do:
-
-    First, make sure you have an entry for this project in `/etc/hosts`.
+    Make sure you have an entry for this project in `/etc/hosts`.
 
         {private_ip}    {project_name}.local
 
-    Running the following command should do it for you:
-
-        $ sudo echo "{private_ip}\t{project_name}.local" >> /etc/hosts
-
-    This file is owned by the system, so you will need to enter your administrator password.
-
-    Next, change into the project directory and bring up our development environment.
+    Then change into your new project directory and fire up the
+    development environment
 
         $ cd {project_name}
         $ vagrant up
