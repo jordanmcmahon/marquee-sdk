@@ -1,6 +1,6 @@
 ---
 - name: install ruby packages
-  apt: pkg={{ item }} state=latest
+  apt: pkg={% raw %}{{ item }}{% endraw %} state=latest
   with_items:
     - 'ruby-dev'
 
@@ -15,7 +15,7 @@
   command: ruby setup.rb chdir='/tmp/rubygems-2.2.2'
 
 - name: remove temporary files
-  file: path={{ item }} state=absent
+  file: path={% raw %}{{ item }}{% endraw %} state=absent
   with_items:
     - '/tmp/rubygems-2.2.2'
     - '/tmp/rubygems-2.2.2.tgz'
