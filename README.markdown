@@ -63,10 +63,10 @@ Installing setuptools, pip...done.
 (gutenberg) → 
 ```
 
-Now, we can install the Marquee SDK from [PyPI](https://pypi.python.org/pypi/marquee-sdk/) using `pip`.
+Now, we can install the Marquee SDK from directly from the git repository using `pip`.
 
 ```
-(gutenberg) → pip install marquee-sdk
+(gutenberg) → pip install -e git+https://github.com/marquee/marquee-sdk.git#egg=marquee_sdk
 ```
 
 The Marquee SDK package and all its dependencies will be install into the _gutenberg_ virtualenv.
