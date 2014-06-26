@@ -1,2 +1,4 @@
 build/*
 marquee_sdk.egg-info/*
+*.swp
+.*.swp
