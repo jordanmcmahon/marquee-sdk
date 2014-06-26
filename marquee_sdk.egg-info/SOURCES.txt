@@ -8,3 +8,4 @@ marquee_sdk.egg-info/dependency_links.txt
 marquee_sdk.egg-info/requires.txt
 marquee_sdk.egg-info/top_level.txt
 marquee_sdk/templates/_Vagrantfile
+marquee_sdk/templates/ops

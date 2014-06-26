@@ -1,0 +1,15 @@
+---
+- name: install OpenJDK
+  apt: pkg=openjdk-6-jre state=latest
+
+- name: Automatically select the Oracle License
+  shell: echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+
+- name: add Oracle Java repository
+  apt_repository: 
+    repo=ppa:'webupd8team/java' 
+    state=present 
+    update_cache=yes
+
+- name: install Oracle Java
+  apt: pkg=oracle-java7-installer state=latest

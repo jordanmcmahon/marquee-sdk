@@ -1,0 +1,11 @@
+---
+- name: install git
+  apt: pkg=git-core state=latest
+
+- name: clone repository
+  git:
+    repo={% raw %}{{ git_clone_url }}{% endraw %}
+    dest=/srv/{{ project_name }}
+    accept_hostkey=True
+  notify:
+    - update git submodules

@@ -1,0 +1,2 @@
+- name: update git submodules
+  command: git submodule update --init chdir=/srv/{{ project_name }}

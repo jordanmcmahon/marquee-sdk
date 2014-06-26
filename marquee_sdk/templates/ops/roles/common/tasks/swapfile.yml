@@ -1,0 +1,24 @@
+---
+- name: create swapfile
+  command: dd if=/dev/zero of=/swapfile bs=1024 count=3M
+  ignore_errors: yes
+
+- name: create linux swap area
+  command: mkswap /swapfile
+
+- name: activate swapfile
+  command: swapon /swapfile
+  ignore_errors: yes
+
+- name: copy fstab template
+  template: src=fstab.j2 dest=/etc/fstab
+
+- name: set swappiness
+  command: echo 10 | tee /proc/sys/vm/swappiness
+
+- name: write swappiness to sysctl
+  sysctl: name=vm.swappiness value=10 state=present
+
+- name: set ownership and permissions of swapfile
+  file: path=/swapfile group=root owner=root mode=0600
+

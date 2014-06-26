@@ -1,0 +1,7 @@
+---
+- name: install common packages
+  apt: pkg={% raw %}{{ item }}{% endraw %} state=latest
+  with_items:
+    - build-essential
+    - git-core
+    - python-pycurl

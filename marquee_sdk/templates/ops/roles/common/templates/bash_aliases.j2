@@ -1,0 +1,17 @@
+# Colors!
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# List things
+alias ls='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Application debugging
+alias ssv='sudo supervisorctl'
+alias rundebug='python manage.py runserver -p 8000'

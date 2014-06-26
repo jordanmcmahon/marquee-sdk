@@ -1,0 +1,8 @@
+---
+- name: copy bash configuration
+  template: src={% raw %}{{ item }}.j2 dest={{ home_dir }}/.{{ item }}{% endraw %}
+  with_items:
+    - bash_aliases
+    - bash_colors
+    - bash_helpers
+    - bash_profile

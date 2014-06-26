@@ -1,0 +1,22 @@
+# Load external bash files
+source $HOME/.bash_aliases
+source $HOME/.bash_colors
+source $HOME/.bash_helpers
+
+
+# Fancypants prompt
+{% if environment == 'production' %}
+export PS1="\[$IBlue\]\u\[$ICyan\]@\H \[$IPurple\]\w\[$IRed\]\$(parse_git_branch)\n\[$IRed\](PRODUCTION) $[$Color_Off\] "
+{% else %}
+export PS1="\[$IBlue\]\u\[$ICyan\]@\H \[$IPurple\]\w\[$IRed\]\$(parse_git_branch)\n\[$IYellow\](DEVELOPMENT) $\[$Color_Off\] "
+{% endif %}
+
+# Virtualenv setup
+export WORKON_HOME="/srv/virtualenvs"
+workon {{ project_name }}
+cd /srv/{{ project_name }}
+
+# Node setup
+NODE="{{ home_dir }}/local/node"
+NODE_PATH="/usr/local/lib/node_modules" 
+PATH=$PATH:$NODE/bin:$NODE/lib/node_modules

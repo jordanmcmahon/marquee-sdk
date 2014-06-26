@@ -1,0 +1,15 @@
+---
+- name: start runtime
+  supervisorctl: name={{ project_name }} state=started
+
+- name: stop runtime
+  supervisorctl: name={{ project_name }} state=stopped
+
+- name: restart runtime
+  supervisorctl: name={{ project_name }} state=restarted
+
+- name: sync content
+  command: /srv/virtualenvs/{{ project_name }}/bin/python manage.py hyperdrive sync_content chdir=/srv/{{ project_name }}
+
+- name: rebuild index
+  command: /srv/virtualenvs/{{ project_name }}/bin/python manage.py rebuild_index chdir=/srv/{{ project_name }}

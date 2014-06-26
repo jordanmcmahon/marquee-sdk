@@ -1,0 +1,5 @@
+---
+- hosts: development
+  sudo: yes
+  roles:
+    - common

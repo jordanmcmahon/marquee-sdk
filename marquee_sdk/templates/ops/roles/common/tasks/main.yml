@@ -1,0 +1,5 @@
+---
+- include: swapfile.yml
+- include: update.yml
+- include: bash.yml
+- include: packages.yml

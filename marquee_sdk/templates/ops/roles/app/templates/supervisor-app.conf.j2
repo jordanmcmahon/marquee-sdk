@@ -1,0 +1,7 @@
+[program:runtime]
+command=/srv/virtualenvs/{{ project_name }}/bin/gunicorn -w 5 wsgi:application
+directory=/srv/{{ project_name }}
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/{{ project_name }}.gunicorn.log
+redirect_stderr=True

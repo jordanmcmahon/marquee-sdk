@@ -1,0 +1,8 @@
+---
+- include: python.yml
+- include: ruby.yml
+- include: nodejs.yml
+- include: nginx.yml
+- include: supervisor.yml
+- include: memcached.yml
+- include: runtime.yml

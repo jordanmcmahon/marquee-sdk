@@ -1,0 +1,10 @@
+---
+environment                     : development
+project_name                    : {{ project_name }}
+home_dir                        : /home/vagrant
+
+app_domain                      : {{ project_name }}.local
+app_alt_domains                 : 
+  - '*.vagrantshare.com'
+app_host                        : {{ private_ip }}
+app_secret                      : {{ app_secret }}
