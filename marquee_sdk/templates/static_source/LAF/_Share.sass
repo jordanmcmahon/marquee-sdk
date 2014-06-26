@@ -1,0 +1,15 @@
+.Share
+    border      : 1px solid $color-lighter_gray
+    background  : white
+
+.Share_Trigger
+    color       : $color-lighter_gray !important
+    padding     : 0.4em
+    font-size   : 30px
+    @each $service in facebook, twitter
+        &.-#{ $service }
+            +icon($service)
+    &.-facebook:hover
+        color: $color-facebook !important
+    &.-twitter:hover
+        color: $color-twitter !important

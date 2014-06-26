@@ -1,0 +1,88 @@
+{%- raw -%}
+{% extends "_base.html" %}
+
+{% block html_title %}{{ story.title }} | {{ super() }}{% endblock %}
+
+{% block body_class %}StoryDetailView -{{ story.role }} {{ super() }}{% endblock %}
+
+{% block extra_head %}
+    <link rel="canonical" href="{{ story.link }}">
+{% endblock %}
+
+{% block view_content_container %}
+    <article class="ViewContent Story">
+        {% set cover_url=story.cover(1280) %}
+        <header class="_Header {% if cover_url %}-has_cover{% else %}-no_cover{% endif %}">
+            <div class="StoryCover" data-embed_url="{{ story.embedCover() }}">
+                <div class="_Media"{% if cover_url %} style="background-image: url('{{ cover_url }}');"{% endif %}>
+                    <div class="_Info">
+                        {% if story.story_date %}
+                            <time class="_Date">{{ story.story_date.strftime('%A, %b %-d, %Y') }}</time>
+                        {% endif %}
+                        <h1 class="_Title">{{ story.title }}</h1>
+                        <div class="_Byline">
+                            {%- if story.byline -%}
+                            By
+                            {% if story.author_google_plus_url %}
+                                <a class="_BylineAuthorship" href="{{ story.author_google_plus_url }}?rel=author">
+                                    {{ story.byline|safe }}
+                                </a>
+                            {% else %}
+                                {{ story.byline|safe }}
+                            {% endif %}
+                        {%- endif -%}</div>
+                        {%- if story.description -%}
+                            <div class="_Summary">{{ story.description }}</div>
+                        {%- endif -%}
+                        <div class="_Meta">
+                            {%- if story.reading_time -%}
+                                <span class="_ReadingTime">{{ story.reading_time }} minutes</span>
+                            {%- endif -%}
+                            {%- if story.locations -%}<span class="_Location">{{ story.locations[0].city }}</span>{%- endif -%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="StoryContent">
+            {%- for content in story.content -%}
+                {{ content|renderBlock }}
+            {%- endfor -%}
+        </div>
+    </article>
+
+{% endblock %}
+
+
+{% block view_params %}
+    params.setUnescaped('story.title', '{{ story.title|cgiEscape }}');
+    params.set('story.cover', '{{ story.cover(640) }}');
+    params.setUnescaped('story.summary', '{{ story.description|cgiEscape }}');
+    params.set('story.link', '{{ story.link }}');
+    params.set('story.slug', '{{ story.slug }}');
+    {% if story.related_content %}
+        {%- for s in story.related_content -%}
+            params.push('story.related_content_ids', '{{ s.id }}');
+        {%- endfor -%}
+    {% endif %}
+    params.set('urls.embedly_endpoint', 'http://api.embed.ly/1/oembed');
+    params.set('EMBEDLY_KEY', '{{ EMBEDLY_KEY }}');
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+        Marquee.ImageBlock.activate();
+        Marquee.EmbedBlock.activate();
+        new Marquee.Cover('.StoryCover', '._Info');
+        new Marquee.Share('facebook', 'twitter');
+        new Marquee.RelatedStories({
+            visualize_segments: false,
+            story_ids       : params.story.related_content_ids,
+            threshold       : 1.1,
+            link_height     : 300,
+            top_threshold   : 400,
+            segment_offset  : 0
+        });
+    </script>
+{% endblock %}
+{%- endraw -%}

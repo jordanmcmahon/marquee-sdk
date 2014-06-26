@@ -1,0 +1,34 @@
+{%- raw -%}
+{% extends "_base.html" %}
+
+{% block html_title %}{{ error_status }} | {{ super() }}{% endblock %}
+
+{% block view_header_container %}
+{% endblock %}
+
+{% block view_content %}
+
+    <div class="SplashError">
+        <div class="SplashError_Info">
+            <div class="SplashError_Status">{{ error_status }}</div>
+            <div class="SplashError_Message">{{ error_message }}</div>
+            <div class="SplashError_Actions">
+                You can <a href="/">head home</a>.
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block branding_container %}{% endblock %}
+
+{% block view_params %}
+    {% if error_code %}params.set('response_status_code', {{ error_code }});{% endif %}
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+        new Marquee.SplashError()
+    </script>
+{% endblock %}
+{%- endraw -%}

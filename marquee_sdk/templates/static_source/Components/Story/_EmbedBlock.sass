@@ -1,0 +1,23 @@
++auto-extend(EmbedBlock)
+
+.EmbedBlock
+    +layer(images)
+    &.-intrinsic_ratio
+        ._Content
+            +Cover-intrinsic_ratio_wrapper
+        iframe
+            +Cover-intrinsic_ratio_content
+
+.EmbeddedStory
+    display: block
+    padding: $Block-body_padding
+    +respond-to-gt($Block-column_width--text)
+        padding: 0
+    ._Cover
+        width: 100%
+        +respond-to-gt-extra_small
+            max-width: $Block-column_width--text / 3
+            float: left
+            margin-right: $Block-body_padding
+    ._Title
+        margin-top: 0

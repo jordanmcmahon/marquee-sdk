@@ -1,0 +1,10 @@
+{%- raw -%}
+{#
+This fragment initializes the [Params manager](https://github.com/marquee/params).
+#}
+<script>(function(){var g,k,l,m,h,d=function(b,a){return function(){return b.apply(a,arguments)}},n=[].indexOf||function(b){for(var a=0,e=this.length;a<e;a++)if(a in this&&this[a]===b)return a;return-1};g="set getAll push setUnescaped pushUnescaped _strict unescape".split(" ");l={"&amp;":"&","&lt;":"<","&gt;":">","&quot;":'"',"&#x27;":"'"};m=RegExp("(&amp;|&lt;|&gt;|&quot;|&#x27;)","g");h=function(b){return b?b.replace(m,function(a){return l[a]}):""};k=function(){function b(a){null==a&&(a={});this.pushUnescaped=
+d(this.pushUnescaped,this);this.push=d(this.push,this);this.setUnescaped=d(this.setUnescaped,this);this.set=d(this.set,this);this._strict=null!=a.strict?a.strict:!1}b.VERSION="1.1.0";b.prototype.set=function(a,e,b){var d,f,c;null==b&&(b={});if(0<=n.call(g,a))throw Error("Cannot set the '"+a+"' param, silly.");if(b.unescape){if("string"!==typeof e)throw Error("Cannot unescape non-string values");e=h(e)}d=a.split(".");c=this;for(f=null;0<d.length;){a=d.shift();if("object"!==typeof c){if(b.push&&null==
+c.push)throw Error("Cannot push subparameter '"+f+"."+a+"'. '"+f+"' is not an Array.");throw Error("Cannot set subparameter '"+f+"."+a+"'. '"+f+"' is not an object.");}if(0===d.length){if(null!=c[a]&&!b.push){if(this._strict)throw Error("Param '"+a+"' was already set with `"+c[a]+"`");"undefined"!==typeof console&&null!==console&&"function"===typeof console.warn&&console.warn("Param '"+a+"' overridden (`"+c[a]+"` with `"+e+"`)")}b.push?(null==c[a]&&(c[a]=[]),c[a].push(e)):c[a]=e}else null==c[a]&&
+(c[a]={}),c=c[a];f=a}return this};b.prototype.setUnescaped=function(a,b){return this.set(a,b,{unescape:!0})};b.prototype.push=function(a,b){return this.set(a,b,{push:!0})};b.prototype.pushUnescaped=function(a,b){return this.set(a,b,{push:!0,unescape:!0})};b.prototype.getAll=function(){var a,b,d;b={};for(a in this)d=this[a],0>n.call(g,a)&&(b[a]=d);return b};b.prototype.unescape=h;return b}();window.params=new k}).call(this);
+</script>
+{%- endraw -%}

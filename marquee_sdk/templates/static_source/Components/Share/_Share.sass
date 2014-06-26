@@ -1,0 +1,11 @@
+.Share
+    position    : fixed
+    top         : 50%
+    left        : -80px
+    +layer(text)
+    +single-transition(left, $global-transition_duration)
+    +state(visible)
+        left: 10px
+
+    ._Trigger
+        display: block

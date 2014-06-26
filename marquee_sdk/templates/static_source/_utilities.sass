@@ -1,0 +1,15 @@
+@mixin absolute-fill
+    display     : block
+    position    : absolute
+    top         : 0
+    left        : 0
+    right       : 0
+    bottom      : 0
+
+@mixin inline-bg-image($path, $background_size: contain, $color: transparent, $ext: 'svg')
+    background-image    : inline-image("_inline/#{ $path }.#{ $ext }")
+    background-position : center center
+    background-repeat   : no-repeat
+    +background-size($background_size)
+    @if $color
+        color: $color

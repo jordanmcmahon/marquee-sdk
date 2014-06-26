@@ -1,0 +1,13 @@
+
+.Zoomer
+    position: fixed
+    left    : 0
+    right   : 0
+    top     : 0
+    bottom  : 0
+
+    ._Image
+        position: absolute
+        +state(transition)
+            +transition-property('left,top,width,height')
+            +transition-duration($global-transition_duration)

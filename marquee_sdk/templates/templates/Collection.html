@@ -1,0 +1,20 @@
+{%- raw -%}
+{% extends "_base.html" %}
+
+{% block view_content %}
+
+    <section class="Collection -has_items">
+
+       {%- include "_includes/CollectionCover.html" -%}
+
+        <div class="CollectionItems">
+            {%- for story in collection.stories() -%}
+                {% include "_includes/StoryCard.html" %}
+            {%- endfor -%}
+        </div>
+
+    </section>
+
+
+{% endblock %}
+{%- endraw -%}

@@ -1,0 +1,87 @@
+.Story_Content
+    padding-bottom: 4em
+    -webkit-font-smoothing: antialiased
+    h2, h3
+        +font-stack($font-sans, 400)
+        margin-top      : 2em
+        letter-spacing  : 3px
+        text-transform  : uppercase
+    h2
+        font-size: 1.125rem
+    h3
+        font-size: 1rem
+    p, blockquote, pre
+        line-height: 1.6
+        +respond-to-lte-extra_small
+            font-size: 1rem
+    blockquote
+        +font-stack($font-sans, 400)
+        font-size       : 1rem
+        padding         : 1em 2em
+        margin-top      : 1em
+        margin-bottom   : 1em
+        color           : $color-red
+        +respond-to-gt-extra_small
+            font-size: 28px
+    a
+        &:active, &:visited
+            color: darken($color-link, 10)
+
+
+.TextBlock[data-effect="dropcaps"]:first-letter
+    margin-top: 6px
+
+
+.ImageBlock
+    opacity: 0
+    +single-transition(opacity, $global-transition_duration)
+    +state(loaded)
+        opacity: 1
+    +state(zoomed, false)
+        .Caption
+            +transition-property(bottom, opacity)
+            +transition-duration($global-transition_duration)
+            position    : relative
+            bottom      : 0px
+            opacity     : 1
+    +state(zoomed)
+        .ImageBlock_Image
+            visibility: hidden
+        .Caption
+            opacity: 0
+            bottom: 100px
+
+.ImageBlock_Image
+    display: block
+    position: relative
+    +layer(images)
+    +state(zoomable)
+        cursor: zoom-in
+        cursor: -webkit-zoom-in
+
+
+.Zoomer
+    +layer(overlay_wrappers)
+    background: transparent
+    +single-transition(background, $global-transition_duration)
+    pointer-events: none
+    +state(open)
+        pointer-events: auto
+        background: rgba(black, 0.8)
+        cursor: zoom-out
+        cursor: -webkit-zoom-out
+
+.Zoomer_Image
+    +layer(overlays)
+
+
+%Caption
+    border      : 1px solid $color-stroke
+    padding     : 1em
+    font-size   : 14px
+    color       : $color-gray
+    background  : white
+    +layer(text)
+    +respond-to-lte-extra_small
+        border-left: 0
+        border-right: 0

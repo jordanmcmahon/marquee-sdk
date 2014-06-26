@@ -1,0 +1,86 @@
+{%- raw -%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Designed and built with <3 in NYC by Marquee: http://marquee.by -->
+        <script>var _sf_startpt=(new Date()).getTime()</script>{# for Chartbeat #}
+        <title>{% block html_title %}{% endblock %}</title>
+
+        <meta name="description" content="{% block meta_description %}{{ publication.get('description') }}{% endblock %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, minimal-ui">
+        <meta charset="utf-8">
+
+        {%- if ENVIRONMENT != 'production' -%}
+            <meta name="robots" content="noindex, nofollow">
+        {%- endif -%}
+
+        <link rel="stylesheet" href="{{ staticURL('screen.css') }}" type="text/css">
+        <link rel="icon" href="{{ staticURL('favicon.ico') }}" type="image/x-icon">
+
+        {# Include tags for Twitter/Facebook #}
+        {%- if og_tags -%}
+            {%- for name,content in og_tags.items() -%}
+                <meta name="{{ name }}" content="{{ content }}">
+            {%- endfor -%}
+        {%- endif -%}
+        <link rel="alternate" type="application/rss+xml" title="Narratively" href="/feed/">
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+
+        {% block view_header_container %}
+            {% include "_includes/Header.html" %}
+        {% endblock %}
+
+        {% block view_content_container %}
+            <div class="ViewContent">{% block view_content %}{% endblock %}</div>
+        {% endblock %}
+
+        {% block view_footer_container %}
+            <footer class="ViewFooter">{% block view_footer %}{% endblock %}</footer>
+        {% endblock %}
+
+        {% block branding_container %}
+        <div class="Branding">
+            <a class="_Link" href="http://marquee.by" title="Marquee: easier, faster, more beautiful web publishing">Published with Marquee</a>
+        </div>
+        {% endblock %}
+
+        {% include "_includes/Params.html" %}
+        <script>
+            {% if DEBUG %}params.set('DEBUG', true);{% endif %}
+            params.set('urls.api_root', '/api/stories/');
+            params.set('urls.search', '/api/search/');
+            {%- if ENVIRONMENT != 'development' -%}
+                params.set('urls.gauges_events', '/api/_gauges/')
+            {%- endif %}
+            {# Various global params go here #}
+            params.set('FACEBOOK_APP_ID', '{{ FACEBOOK_APP_ID }}');
+            params.set('CONTACT_EMAIL', '{{ CONTACT_EMAIL }}');
+            params.set('twitter.profile_url', 'https://twitter.com/{{ TWITTER_SCREEN_NAME }}');
+            params.set('facebook.profile_url', 'https://www.facebook.com/{{ FACEBOOK_SCREEN_NAME }}');
+            params.set('youtube.profile_url', 'https://www.youtube.com/{{ YOUTUBE_SCREEN_NAME }}');
+            {% block view_params %}
+                {# View-specific params go into this block when extending #}
+            {% endblock %}
+        </script>
+
+        <script src="{{ staticURL('app.js') }}"></script>
+        <script>
+        </script>
+
+        {% block extra_body %}
+        {% endblock %}
+
+        {# Load the social stuff last so it doesn't block layout adjustments #}
+        <script>
+            Marquee.Social.activate();
+        </script>
+
+        {% if ENVIRONMENT != 'development' %}
+            {% include "_includes/Analytics.html" %}
+        {% endif %}
+
+    </body>
+</html>
+{%- endraw -%}

@@ -1,0 +1,54 @@
+{%- raw -%}
+{% if GOOGLE_ANALYTICS_ID %}
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_ID }}']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+{% endif %}
+
+{% if CHARTBEAT_ID and CHARTBEAT_DOMAIN %}
+    <script>
+        var _sf_async_config = { uid: "{{ CHARTBEAT_ID }}", domain: "{{ CHARTBEAT_DOMAIN }}", useCanonical: true };
+      (function() {
+        function loadChartbeat() {
+          window._sf_endpt = (new Date()).getTime();
+          var e = document.createElement('script');
+          e.setAttribute('language', 'javascript');
+          e.setAttribute('type', 'text/javascript');
+          e.setAttribute('src','//static.chartbeat.com/js/chartbeat.js');
+          document.body.appendChild(e);
+        };
+        var oldonload = window.onload;
+        window.onload = (typeof window.onload != 'function') ?
+          loadChartbeat : function() { oldonload(); loadChartbeat(); };
+      })();
+    </script>
+{% endif %}
+
+{% if GAUGES_SITE_ID %}
+    <script>
+      var _gauges = _gauges || [];
+      (function() {
+        var t   = document.createElement('script');
+        t.type  = 'text/javascript';
+        t.async = true;
+        t.id    = 'gauges-tracker';
+        t.setAttribute('data-site-id', '{{ GAUGES_SITE_ID }}');
+        t.src = '//secure.gaug.es/track.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+      })();
+    </script>
+    <script>
+        // Gauges Events v1.1
+        (function(){var t;t=function(){function t(){this.iframe=this.createIframe(),this.initTrackEvents()}return t.prototype.createIframe=function(){var t;return t=document.createElement("iframe"),t.id="gauges-events-tracker",t.style.cssText="width:0;height:0;border:0",document.body.appendChild(t),t},t.prototype.initTrackEvents=function(){var t,e,n,r,a,i,u,c,o,s=this;for(a=document.querySelector?document.querySelectorAll("[data-gauges-event]"):function(){var e,n,r,a;for(r=document.getElementsByTagName("*"),a=[],e=0,n=r.length;n>e;e++)t=r[e],t.getAttribute("data-gauges-event")&&a.push(t);return a}(),c=window.addEventListener?["addEventListener","click"]:["attachEvent","onclick"],e=c[0],n=c[1],o=[],i=0,u=a.length;u>i;i++)r=a[i],o.push(function(t){var r;return r=t.getAttribute("data-gauges-event"),t[e](n,function(){return s.trackEvent(r)},!1)}(r));return o},t.prototype.trackEvent=function(t){return this.iframe.src="/api/_gauges?event="+t},t}(),window.GaugesEvents=new t}).call(this);
+    </script>
+{% endif %}
+{%- endraw -%}
