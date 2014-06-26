@@ -8,8 +8,8 @@ template_loader = jinja2.FileSystemLoader(TEMPLATE_DIR)
 template_env    = jinja2.Environment(loader=template_loader)
 
 def copy_template(src, dest, **kwargs):
-    skip = ['.png', '.swp']
-    if src[-4:] in skip:
+    skip = ['png', 'swp']
+    if src[-3:] in skip:
         shutil.copyfile(os.path.join(TEMPLATE_DIR, src), dest)
 
     else:

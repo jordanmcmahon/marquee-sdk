@@ -1,4 +1,4 @@
-{%- raw -%}
+{% raw %}
 {% if GOOGLE_ANALYTICS_ID %}
     <script>
         var _gaq = _gaq || [];
@@ -51,4 +51,4 @@
         (function(){var t;t=function(){function t(){this.iframe=this.createIframe(),this.initTrackEvents()}return t.prototype.createIframe=function(){var t;return t=document.createElement("iframe"),t.id="gauges-events-tracker",t.style.cssText="width:0;height:0;border:0",document.body.appendChild(t),t},t.prototype.initTrackEvents=function(){var t,e,n,r,a,i,u,c,o,s=this;for(a=document.querySelector?document.querySelectorAll("[data-gauges-event]"):function(){var e,n,r,a;for(r=document.getElementsByTagName("*"),a=[],e=0,n=r.length;n>e;e++)t=r[e],t.getAttribute("data-gauges-event")&&a.push(t);return a}(),c=window.addEventListener?["addEventListener","click"]:["attachEvent","onclick"],e=c[0],n=c[1],o=[],i=0,u=a.length;u>i;i++)r=a[i],o.push(function(t){var r;return r=t.getAttribute("data-gauges-event"),t[e](n,function(){return s.trackEvent(r)},!1)}(r));return o},t.prototype.trackEvent=function(t){return this.iframe.src="/api/_gauges?event="+t},t}(),window.GaugesEvents=new t}).call(this);
     </script>
 {% endif %}
-{%- endraw -%}
+{% endraw %}
