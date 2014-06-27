@@ -1,3 +1,5 @@
+> The Marquee SDK is under active development. For production use, the [Yeoman Generator](http://github.com/marquee/generator-marquee) is preferred. 
+
 # Introduction
 
 Marquee provides a content platform on which applications can be built. We use this  platform to build [editorial tools](#) and [web publications](#). Over the past few years, we've explored all kinds of strategies for building and maintaining sustainable content-driven applications, and have compiled these into the [marquee-sdk](http://github.com/marquee/marquee-sdk), an open-source, public domain piece software package aimed at making this kind of development work easier.
