@@ -5,7 +5,6 @@ path    = require 'path'
 
 module.exports = (grunt) ->
 
-    PACKAGE             = grunt.file.readJSON('./package.json')
     DEBUG               = not grunt.cli.options.production
     DIST_DIR            = './.dist/'
     TO_UPLOAD_DIR       = './.dist_zip/'
@@ -16,7 +15,6 @@ module.exports = (grunt) ->
     nonGzippedFile  = (src) -> grunt.file.isFile(src) and src.split('.').pop() not in ['js', 'css']
 
     grunt.config.init
-        pkg         : PACKAGE
         BUILD_DIR   : BUILD_DIR
         SOURCE_DIR  : SOURCE_DIR
 
