@@ -80,7 +80,7 @@ With the Marquee SDK installed, you will now have access to the `marquee` progra
 Let's create a Marquee Runtime for our example project using the `startproject` subcommand
 
 ```
-(gutenberg) → marquee startproject Gutenberg
+(gutenberg) → marquee startproject gutenberg
 ```
 
 You'll be first asked to assign a *Private IP Address* to the system. By convention, we use the _10.0.1.x_ address space for our Marquee Runtime projects, so choose something that's not in use, say, `10.0.1.10`.
