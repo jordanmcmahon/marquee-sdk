@@ -45,6 +45,12 @@
     - { name: 'keen',               version: '0.2.3'}
     - { name: 'boto',               version: '2.28.0'}
 
+- name: set ownership of virtualenv
+  file: path=/srv/virtualenvs/{{ project_name }}
+        owner={% raw %}{{ default_user }}{% endraw %}
+        group={% raw %}{{ default_user }}{% endraw %}
+        recurse=yes
+
 - name: add supervisor configuration for runtime
   template: src=supervisor-app.conf.j2 dest=/etc/supervisor/conf.d/{{ project_name }}.conf
   notify:
