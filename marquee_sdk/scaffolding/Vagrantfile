@@ -17,6 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.inventory_path  = 'ops/inventory/development'
         ansible.extra_vars      = 'ops/vars/development'
         ansible.playbook        = 'ops/development.yml'
+        ansible.skip_tags       = 'production_only'
     end
 
     config.vm.provider 'virtualbox' do |vb|

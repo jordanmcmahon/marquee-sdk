@@ -7,3 +7,5 @@
   notify:
     - generate locales
     - reconfigure locale for installed packages
+  tags:
+    - production_only
