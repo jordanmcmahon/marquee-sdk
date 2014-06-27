@@ -10,6 +10,7 @@ import  os
 import  re
 import  socket
 import  textwrap
+import  uuid
 
 @click.group()
 def marquee():
@@ -24,6 +25,7 @@ def startproject(project_name):
     PROJECT_PATH    = os.path.join(os.getcwd(), project_name)
     private_ip      = click.prompt('Assign a Private IP address to this project (10.0.1.x)')
     marquee_token   = click.prompt('Enter your Marquee API Token')
+    secret_key      = uuid.uuid4().hex
 
     # Create new directory for project
     if not os.path.exists(PROJECT_PATH):
@@ -57,6 +59,7 @@ def startproject(project_name):
                 project_name    = project_name,
                 private_ip      = private_ip,
                 marquee_token   = marquee_token,
+                secret_key      = secret_key
             )
 
     exit_message = textwrap.dedent("""
