@@ -2,7 +2,7 @@
 
 # Introduction
 
-Marquee provides a content platform on which applications can be built. We use this  platform to build [editorial tools](#) and [web publications](#). Over the past few years, we've explored all kinds of strategies for building and maintaining sustainable content-driven applications, and have compiled these into the [marquee-sdk](http://github.com/marquee/marquee-sdk), an open-source, public domain piece software package aimed at making this kind of development work easier.
+Marquee provides a content platform on which applications can be built. We use this  platform to build [editorial tools](#) and [web publications](#). Over the past few years, we've explored all kinds of strategies for building and maintaining sustainable content-driven applications, and have compiled these into the [marquee-sdk](http://github.com/marquee/marquee-sdk), an open-source, public domain software package aimed at making this kind of development work easier.
 
 The Marquee SDK is highly opinionated and is not required for developing on Marquee. We offer a standard [REST API](#) if you want to roll your own solution. We've made an effort to keep our SDK pretty decoupled, so even if you don't care for all our decisions, there should be something there you'll find interesting.
 
