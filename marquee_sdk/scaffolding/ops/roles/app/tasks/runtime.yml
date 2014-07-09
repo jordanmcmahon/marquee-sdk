@@ -98,6 +98,13 @@
   notify:
     - reload supervisor
 
+- name: start app services
+  service: name={{ item }} state=started
+  with_items:
+    - nginx
+    - supervisor
+
+
 - name: restart app services
   service: name={{ item }} state=restarted
   with_items:
