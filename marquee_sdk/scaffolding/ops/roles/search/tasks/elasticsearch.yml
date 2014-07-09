@@ -12,5 +12,9 @@
   notify:
     - restart elasticsearch
 
+- name: copy ElasticSearch config
+  template: src=elasticsearch.yml.j2
+            dest=/etc/elasticsearch/elasticsearch.yml
+
 - name: start ElasticSearch
   service: name=elasticsearch state=started

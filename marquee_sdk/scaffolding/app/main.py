@@ -1,4 +1,5 @@
 from flask              import Flask, render_template, abort, redirect
+from flask.ext.cache    import Cache
 
 from .views             import (PublicationView, loadPublication)
 from .template_helpers  import *
@@ -53,3 +54,8 @@ def create_app():
         app.register_blueprint(hyperdrive, url_prefix="/_hyperdrive")
 
     return app
+
+app = create_app()
+cache = Cache(app, config={
+    'CACHE_TYPE'        : 'memcached',
+})
