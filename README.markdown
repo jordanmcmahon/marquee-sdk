@@ -34,7 +34,7 @@ Follow the instructions on screen to configure your _bash shell_ to include _vir
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
-export VIRTUALENVWRAPPER_PYTHON='/usr/local/bin/python'
+export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python'
 export PIP_RESPECT_VIRTUALENV=true
 if [[ -r /usr/local/bin/virtualenvwrapper.sh ]]; then
     source /usr/local/bin/virtualenvwrapper.sh
