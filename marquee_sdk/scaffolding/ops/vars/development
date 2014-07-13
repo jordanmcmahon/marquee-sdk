@@ -1,6 +1,6 @@
 ---
 environment                         : development
-project_name                        : {{ project_name }}
+project_name                        : runtime
 home_dir                            : /home/vagrant
 default_user                        : vagrant
 default_group                       : vagrant

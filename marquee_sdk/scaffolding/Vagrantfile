@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define 'development' do |dev|
         dev.vm.hostname = '{{ project_name }}-dev'
         dev.vm.network 'private_network', ip: '{{ private_ip }}'
-        dev.vm.synced_folder '.', '/srv/{{ project_name }}'
+        dev.vm.synced_folder '.', '/srv/runtime'
     end
 
     config.vm.provision :ansible do |ansible|

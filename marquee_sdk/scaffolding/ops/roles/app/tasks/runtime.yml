@@ -2,29 +2,34 @@
 - name: install required runtime packages from apt
   apt: pkg={% raw %}{{ item }}{% endraw %} state=latest
   with_items:
-    - libxml2-dev
-    - libxslt1-dev
+    - 'libxml2-dev'
+    - 'libxslt1-dev'
 
 - name: copy runtime environment config
-  template: src=env.j2 dest=/srv/{{ project_name }}/.env
+  template: src='env.j2' dest='/srv/runtime/.env'
+  notify:
+    - restart runtime
 
 - name: add nginx configuration for runtime
-  template: src=nginx.site.j2 dest=/etc/nginx/sites-available/{{ project_name }}
+  template: src='nginx.site.j2' 
+            dest='/etc/nginx/sites-available/runtime'
   notify:
     - restart nginx
+    - restart runtime
 
 - name: enable nginx configuration for runtime
-  file: src=/etc/nginx/sites-available/{{ project_name }}
-        dest=/etc/nginx/sites-enabled/{{ project_name }}
+  file: src='/etc/nginx/sites-available/runtime'
+        dest='/etc/nginx/sites-enabled/runtime'
         state=link 
   notify:
     - restart nginx
+    - restart runtime
 
 - name: install runtime python requirements
   pip:  name={% raw %}{{ item.name }}{% endraw %}
         version={% raw %}{{ item.version }}{% endraw %}
         state=present
-        virtualenv=/srv/virtualenvs/{{ project_name }}
+        virtualenv=/srv/virtualenvs/runtime
   with_items:
     - { name: 'git+https://github.com/marquee/content.git#egg=content', version: '0.1.2'}
     - { name: 'Flask',              version: '0.10.1'}
@@ -44,6 +49,8 @@
     - { name: 'feedgen',            version: '0.2.8'}
     - { name: 'keen',               version: '0.2.3'}
     - { name: 'boto',               version: '2.28.0'}
+  notify:
+    - restart runtime
 
 - name: set ownership of virtualenv
   file: path=/srv/virtualenvs
@@ -61,7 +68,7 @@
   npm:  name={% raw %}{{ item.name }}{% endraw %}
         version={% raw %}{{ item.version }}{% endraw %}
         state=present
-        path=/srv/{{ project_name }}
+        path=/srv/runtime
   with_items:
     - { name: 'formwork',               version: 'https://github.com/marquee/formwork/tarball/v0.3.5'}
     - { name: 'shiny',                  version: 'https://github.com/alecperkins/sass-shiny/tarball/v0.9.0'}
@@ -83,33 +90,39 @@
     - { name: 'grunt-shell',            version: '~0.6.1'}
     - { name: 'grunt-contrib-copy',     version: '~0.5.0'}
     - { name: 'viewport-units-buggyfill', version: '~0.3.1'}
+  notify:
+    - restart runtime
 
 - name: build static files
-  command: grunt build:production chdir=/srv/{{ project_name }}
+  command: grunt build:production chdir=/srv/runtime
+  notify:
+    - restart runtime
 
 - name: add rebuild_index to cron
   cron: name="rebuild index"
         minute=0 hour=0/2 day=* month=* weekday=*
-        job="/srv/virtualenvs/{{ project_name }}/bin/python /srv/{{project_name}}/manage.py rebuild_index"
+        job="/srv/virtualenvs/runtime/bin/python /srv/runtime/manage.py rebuild_index"
         state=present
 
 - name: copy supervisor configuration for runtime
-  template: src=supervisor-app.conf.j2 dest=/etc/supervisor/conf.d/{{ project_name }}.conf
+  template: src=supervisor-app.conf.j2 dest=/etc/supervisor/conf.d/runtime.conf
   notify:
     - reload supervisor
+    - restart runtime
 
 - name: start app services
-  service: name={{ item }} state=started
+  service: name={% raw %}{{ item }}{% endraw %} state=started
   with_items:
     - nginx
     - supervisor
+  notify:
+    - restart runtime
 
 
 - name: restart app services
-  service: name={{ item }} state=restarted
+  service: name={% raw %}{{ item }}{% endraw %} state=restarted
   with_items:
     - nginx
     - supervisor
-
-- name: restart app
-  supervisorctl: name={{ project_name }} state=restarted
+  notify:
+    - restart runtime

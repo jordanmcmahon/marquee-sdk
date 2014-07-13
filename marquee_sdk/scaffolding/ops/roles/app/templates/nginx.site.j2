@@ -6,8 +6,8 @@ upstream app_server {
 server {
     listen 80;
     server_name {{ app_domain }};
-    access_log /var/log/nginx/{{ app_domain }}.access.log;
-    error_log /var/log/nginx/{{ app_domain }}.error.log;
+    access_log /var/log/nginx/runtime.access.log;
+    error_log /var/log/nginx/runtime.error.log;
     keepalive_timeout 5;
 
     location / {
@@ -21,7 +21,7 @@ server {
         expires 168h;
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        root /srv/{{ project_name }};
+        root /srv/runtime;
     }
 
 }
