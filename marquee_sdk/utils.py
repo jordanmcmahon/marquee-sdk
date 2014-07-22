@@ -1,5 +1,6 @@
 from .config import *
 
+import  ConfigParser
 import  jinja2
 import  os
 import  shutil
@@ -19,3 +20,28 @@ def copy_template(src, dest, **kwargs):
         with open(dest, 'w') as f:
             f.write(contents)
 
+def load_config(filepath, simple=True, section='config'):
+    """
+    Returns a dictionary
+
+    Requires a path to a config file. By default, we will
+    fake section heads required by ConfigParser. To turn this
+    off, pass `simple=False` when calling this function.
+    """
+    if not os.path.isfile(filepath):
+        print '{0} does not exist'.format(filepath)
+        raise IOError
+
+    if simple:
+        fp = FakeSectionHead(open(filepath))
+    else:
+        fp = open(filepath)
+
+    config = ConfigParser.SafeConfigParser()
+    try:
+        config.readfp(fp)
+    except IOError:
+        print '{0} is not a valid config file'.format(filepath)
+        raise IOError
+
+    return dict(config.items(section))

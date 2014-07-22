@@ -1,6 +1,7 @@
 bin/marquee
 marquee_sdk/__init__.py
 marquee_sdk/config.py
+marquee_sdk/providers.py
 marquee_sdk/utils.py
 marquee_sdk.egg-info/PKG-INFO
 marquee_sdk.egg-info/SOURCES.txt
