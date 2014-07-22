@@ -176,6 +176,7 @@ def deploy(provider):
         
         # Run playbook
         try:
+            print 'Begin running playbook ({0})'.format(playbook)
             ansible = subprocess.Popen(playbook_cmd)
             ansible.wait()
         except KeyboardInterrupt:
