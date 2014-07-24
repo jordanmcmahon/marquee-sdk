@@ -2,8 +2,16 @@
 #!/usr/bin/env python 
 
 from marquee_sdk.utils      import copy_template, load_config 
-from marquee_sdk.config     import TEMPLATE_DIR, PROVIDERS, PUB_KEY
+from marquee_sdk.config     import (
+    PROVIDERS, 
+    SLACK_CONFIG,
+    PUB_KEY,
+    SERVICES,
+    TEMPLATE_DIR, 
+)
+#from marquee_sdk.notify     import SlackClient
 from marquee_sdk.providers  import DigitalOceanClient
+#from marquee_sdk.deploy     import DeployLock
 
 import  click
 import  ConfigParser
@@ -88,6 +96,14 @@ def startproject(project_name):
     """.format(**locals()))
 
     click.echo(exit_message)
+
+@marquee.command()
+def setup(service):
+    if service not in SERVICES:
+        print '{0} is not a supported service'.format(service)
+        quit()
+    
+
    
 @marquee.command()
 @click.argument('provider')
@@ -96,14 +112,17 @@ def deploy(provider):
         print '{0} is not a valid provider'.format(provider)
         quit()
 
+    if os.path.exists(SLACK_CONFIG):
+        slack_client = SlackClient()
+    else:
+        slack_client = None
+
     if provider == 'digitalocean':
         do_config       = load_config('.digitalocean')
         access_token    = do_config['access_token']
         do_client       = DigitalOceanClient(
                             access_token=access_token
                         )
-
-
 
         # Fetch ssh keys, make sure ours is included
         list_keys       = do_client.list_keys()
@@ -152,31 +171,16 @@ def deploy(provider):
             print 'Ok, successfully created droplet {0}'.format(target_droplet['name'])
 
         
-        # Make sure IP matches inventory file
-        inventory_parser    = ConfigParser.ConfigParser(allow_no_value=True)
-        inventory_file      = os.path.join('ops', 'inventory', 'digitalocean')
-        inventory_parser.read(inventory_file)
-        try:
-            existing_ip = inventory_parser.options('digitalocean')[0]
-        except KeyError:
-            existing_ip = None
-        
-        droplet_ip = target_droplet['networks']['v4'][0]['ip_address']
-
-        if existing_ip == droplet_ip:
-            print 'Ok, IP address ({0}) for droplet found in inventory'.format(droplet_ip)
-        else:
-            print 'Deploy aborted. No match for Droplet address ({0}) in inventory'.format(droplet_ip)
-            quit()
-
         # Build playbook command
         playbook        = os.path.join('ops', 'digitalocean.yml')
+        inventory       = os.path.join('ops', 'inventory', provider)
         playbook_vars   = os.path.join('ops', 'vars', 'digitalocean')
-        playbook_cmd    = ['ansible-playbook', playbook, '-i', inventory_file, '-e', '@{0}'.format(playbook_vars)]
+        playbook_cmd    = ['ansible-playbook', playbook, '-i', inventory, '-e', '@{0}'.format(playbook_vars)]
         
         # Run playbook
+        print 'Begin running playbook ({0})'.format(playbook)
+#       slack_client.notify('Deploy started by {0}'.format(socket.gethostname())
         try:
-            print 'Begin running playbook ({0})'.format(playbook)
             ansible = subprocess.Popen(playbook_cmd)
             ansible.wait()
         except KeyboardInterrupt:
