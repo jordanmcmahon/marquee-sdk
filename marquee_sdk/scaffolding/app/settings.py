@@ -1,53 +1,21 @@
+import json
 import os
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-# Load any additional configuration from an .env file if the environment
-# doesn't already have everything required.
-remaining_env_variables = set(REQUIRED_ENV)
-if not set(REQUIRED_ENV).issubset(os.environ):
-    try:
-        f = open('.env', 'r')
-    except IOError:
-        raise IOError('You are missing a .env file')
-
-    if f is not None:
-        for line in f.readlines():
-            split_line = line.split('=')
-            var = split_line[0]
-            if len(split_line) > 1:
-                val = split_line[1].strip()
-            else:
-                val = ''
-            os.environ[var] = val
-            if var in remaining_env_variables:
-                remaining_env_variables.remove(var)
-    if len(remaining_env_variables) > 0:
-        raise AttributeError('You are missing the following env variables: {0}'.format(
-                    ', '.join(sorted(list(remaining_env_variables)))
-                ))
-
-
-
-# Some helpers for converting the environment values to the Python equivalent.
-
-def asBool(var_name, default=None):
-    if var_name in os.environ:
-        return str(os.environ.get(var_name)).lower() in ('yes', 'true', '1')
-    return default
-
-def asInt(var_name, default=None):
-    if var_name in os.environ:
-        return int(os.environ.get(var_name))
-    return default
-
-
+# Load .marquee-runtime configuration into os environs
+try:
+    RUNTIME_CONFIG = json.load(file(os.path.join(PROJECT_DIR, '.marquee-runtime')))
+except IOError:
+    from marquee_sdk.config import RUNTIME_CONFIG
+for key, value in RUNTIME_CONFIG.iteritems():
+    os.environ[key.upper()] = value
 
 # App config
-PORT                    = asInt('PORT', 5000)
-HOST                    = os.environ.get('HOST', '127.0.0.1')
-DEBUG                   = asBool('DEBUG', True)
-ENVIRONMENT             = os.environ.get('ENVIRONMENT', 'production')
+PORT                    = asInt('port', 5000)
+HOST                    = RUNTIME_CONFIG.get('runtime_host', '127.0.0.1')
+DEBUG                   = RUNTIME_CONFIG.get('debug', False)
+ENVIRONMENT             = RUNTIME_CONFIG.get('environment', 'production')
 
 REDIS_URL               = os.environ.get('REDIS_URL')
 SECRET_KEY              = os.environ['SECRET_KEY']
