@@ -1,23 +1,13 @@
 ---
-environment                         : development
-project_name                        : runtime
-home_dir                            : /home/vagrant
-default_user                        : vagrant
-default_group                       : vagrant
-
-app_domain                          : {{ project_name }}.local
-app_alt_domains                     : 
-  - '*.vagrantshare.com'
-app_host                            : {{ private_ip }}
-app_secret                          : {{ secret_key }}
-marquee_cache_soft_expiry           : 10
-marquee_content_api_token           : {{ marquee_token }}
-marquee_content_api_root            : marquee.by/content/
-marquee_lib_cdn_root                : marquee-cdn.net
-marquee_asset_cdn_root              : assets.marquee-cdn.net/
-marquee_debug                       : True
-marquee_environment                 : development
-marquee_static_url                  : /static/
-marquee_publication_name            : {{ project_name }}
-marquee_publication_short_name      : {{ project_name }}
-marquee_secret_key                  : {{ secret_key }}
+debug           : true
+project_name    : {{ project_name }}
+login_user      : vagrant
+login_group     : vagrant
+login_dir       : /home/vagrant
+runtime_user    : www-data
+runtime_group   : www-data
+runtime_host    : {{ host }}
+runtime_domain  : {{ runtime_domain }}
+runtime_alt_domains :
+    - '*.vagrantshare.com'
+runtime_venv    : /srv/virtualenvs/{{ project_name }}

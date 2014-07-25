@@ -1,6 +1,8 @@
 ---
 - name: install supervisor
-  apt: pkg=supervisor state=latest
+  apt:  pkg='supervisor' state='latest'
   notify:
     - start supervisor
+    - reload supervisor
+    - restart supervisor
 

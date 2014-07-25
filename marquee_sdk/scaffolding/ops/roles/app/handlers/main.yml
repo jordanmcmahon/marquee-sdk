@@ -1,4 +1,5 @@
 ---
-- include: nginx.yml
-- include: supervisor.yml
-- include: runtime.yml
+- include: 'memcached.yml'
+- include: 'nginx.yml'
+- include: 'supervisor.yml'
+- include: 'runtime.yml'

@@ -4,6 +4,5 @@
   roles:
     - common
     - kvstore
-#    - app
-#    - kvstore
-#    - search
+    - search
+    - app

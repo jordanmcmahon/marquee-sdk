@@ -1,23 +1,6 @@
-"""
-Load the configuration specified in the environment into names for use
-elsewhere in the app.
-"""
-
 import os
 
-
-
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-# The minimum necessary configuration to run the app.
-REQUIRED_ENV = [
-    'CONTENT_API_TOKEN',
-    'CONTENT_API_ROOT',
-    'STATIC_URL',
-    'CACHE_SOFT_EXPIRY',
-    'SECRET_KEY',
-    'PUBLICATION_SHORT_NAME',
-]
 
 # Load any additional configuration from an .env file if the environment
 # doesn't already have everything required.

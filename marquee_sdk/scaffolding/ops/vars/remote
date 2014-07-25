@@ -1,0 +1,9 @@
+---
+debug           : false 
+project_name    : {{ project_name }}
+runtime_user    : www-data
+runtime_group   : www-data
+runtime_host    : {{ runtime_host }}
+runtime_domain  : {{ runtime_domain }}
+runtime_alt_domains :
+    - 'www.{{ runtime_domain }}'

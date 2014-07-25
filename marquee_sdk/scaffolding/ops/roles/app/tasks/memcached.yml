@@ -1,6 +1,6 @@
 ---
 - name: install memcached
-  apt: pkg=memcached state=latest
- 
-- name: start memcached
-  service: name=memcached state=restarted
+  apt: pkg='memcached' state='latest'
+  notify:
+    - start memcached
+    - restart memcached

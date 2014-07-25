@@ -1,21 +1,7 @@
 ---
 - name: install ruby packages
-  apt: pkg={% raw %}{{ item }}{% endraw %} state=latest
+  apt: pkg="{% raw %}{{ item }}{% endraw %}" state=latest
   with_items:
     - 'ruby-dev'
-
-- name: download latest rubygems
-  get_url:  url='http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz'
-            dest='/tmp/rubygems-2.2.2.tgz'
-
-- name: unpack rubygems
-  command: tar -zxf /tmp/rubygems-2.2.2.tgz chdir='/tmp'
-
-- name: install rubygems
-  command: ruby setup.rb chdir='/tmp/rubygems-2.2.2'
-
-- name: remove temporary files
-  file: path={% raw %}{{ item }}{% endraw %} state=absent
-  with_items:
-    - '/tmp/rubygems-2.2.2'
-    - '/tmp/rubygems-2.2.2.tgz'
+    - 'rubygems1.9.1'
+    - 'rubygems-integration'

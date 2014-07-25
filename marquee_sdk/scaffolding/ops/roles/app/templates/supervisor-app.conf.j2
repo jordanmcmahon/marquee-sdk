@@ -1,7 +1,7 @@
-[program:runtime]
-command=/srv/virtualenvs/runtime/bin/gunicorn -w 5 wsgi:application
-directory=/srv/runtime
+[program:{% raw %}{{ project_name }}{% endraw %}]
+command=/srv/virtualenvs/{% raw %}{{ project_name }}{% endraw %}/bin/gunicorn -w 5 wsgi:application
+directory=/srv/{% raw %}{{ project_name }}{% endraw %}
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/supervisor/runtime.gunicorn.log
+stdout_logfile=/var/log/supervisor/{% raw %}{{ project_name }}{% endraw %}.gunicorn.log
 redirect_stderr=True

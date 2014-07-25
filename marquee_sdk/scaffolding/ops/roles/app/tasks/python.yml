@@ -1,11 +1,11 @@
 ---
 - name: install core python packages
-  apt: name={% raw %}{{ item }}{% endraw %} state=latest
+  apt: name='{% raw %}{{ item }}{% endraw %}' state='latest'
   with_items:
-    - python-dev
-    - python-pycurl
-    - python-setuptools
-    - python-pip
-    - python-software-properties
-    - python-virtualenv
-    - virtualenvwrapper
+    - 'python-dev'
+    - 'python-pycurl'
+    - 'python-setuptools'
+    - 'python-pip'
+    - 'python-software-properties'
+    - 'python-virtualenv'
+    - 'virtualenvwrapper'
