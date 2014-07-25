@@ -9,3 +9,9 @@
     - 'python-software-properties'
     - 'python-virtualenv'
     - 'virtualenvwrapper'
+
+- name: create virtualenvs directory
+  file: path='/srv/virtualenvs' 
+        state='directory'
+        owner={% raw %}{{ runtime_user }}{% endraw %}
+        group={% raw %}{{ runtime_group }}{% endraw %}

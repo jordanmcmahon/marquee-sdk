@@ -7,14 +7,14 @@
 
 - name: add nginx configuration for runtime
   template: src='nginx.site.j2' 
-            dest='/etc/nginx/sites-available/runtime'
+            dest='/etc/nginx/sites-available/{% raw %}{{ runtime_domain }}{% endraw %}'
   notify:
     - restart nginx
     - restart runtime
 
 - name: enable nginx configuration for runtime
-  file: src='/etc/nginx/sites-available/runtime'
-        dest='/etc/nginx/sites-enabled/runtime'
+  file: src='/etc/nginx/sites-available/{% raw %}{{ runtime_domain }}{% endraw %}'
+        dest='/etc/nginx/sites-enabled/{% raw %}{{ runtime_domain }}{% endraw %}'
         state=link 
   notify:
     - restart nginx
@@ -24,6 +24,7 @@
   file: path="/srv/virtualenvs/{% raw %}{{ project_name }}{% endraw %}"
         owner="{% raw %}{{ login_user }}{% endraw %}"
         group="{% raw %}{{ login_user }}{% endraw %}"
+        state='directory'
         recurse=yes
 
 - name: install runtime python requirements
