@@ -3,6 +3,7 @@
   sudo: yes
   roles:
     - common
-    - app
     - kvstore
-    - search
+#    - app
+#    - kvstore
+#    - search

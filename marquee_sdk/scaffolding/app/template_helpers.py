@@ -18,9 +18,9 @@ def staticURL(path):
     Public: helper for including static media assets in templates.
 
     Example
-        
-        {{ staticURL('images/file.jpg') }}
-        
+
+        {% raw %}{{ staticURL('images/file.jpg') }}{% endraw %}
+
 
     path - a String path to the asset, relative to the root of the static folder
 
@@ -35,9 +35,9 @@ def mediaURL(path):
     Public: helper for including user-uploaded media in templates.
 
     Example
-        
-        {{ mediaURL('images/file.jpg') }}
-        
+
+        {% raw %}{{ mediaURL('images/file.jpg') }}{% endraw %}
+
 
     path - a String path to the asset, relative to the root of the media folder
 
@@ -48,7 +48,7 @@ def mediaURL(path):
 
 
 def toItemSize(count, floor=1, ceiling=5):
-    """
+    """{% raw %}
     Public: filter that converts a count of items to the appropriate size for
     [Formwork](https://github.com/droptype/formwork)'s `.item-` variants.
 
@@ -70,7 +70,7 @@ def toItemSize(count, floor=1, ceiling=5):
                 ...
             </div>
         {% endfor %}Returns the str size name.
-    """
+    {% endraw %}"""
 
     if count < floor:
         count = floor
@@ -116,13 +116,14 @@ def contentPreview(eval_ctx, story, char_limit=400, text_only=False, escape=True
                     should not be wrapped in spans
     escape        - (optional:True) escape HTML entities in the text_only
                     content output
-
+    {% raw %}
     Examples{{ story|content_preview }}
 
         {{ story|content_preview(char_limit=200) }}
 
         {{ story|content_preview(text_only=True) }}Returns a str of HTML up to `char_limit` content characters long (count
     doesn't include markup).
+    {% endraw %}
     """
     # Default to an empty string since this is for a template.
     content_preview = u''
@@ -198,9 +199,9 @@ def renderCover(eval_ctx, obj):
                  Category)
 
     Examples
-
+    {% raw %}
         {{ story|render_cover }}
-
+    {% endraw %}
     Returns a unicode HTML fragment, or empty string.
     """
     from content import Image, Embed

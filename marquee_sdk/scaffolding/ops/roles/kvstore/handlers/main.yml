@@ -1,3 +1,2 @@
 ---
-- name: start redis
-  service: name=redis-server state=started
+- include: 'redis.yml'

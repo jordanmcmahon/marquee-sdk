@@ -1,5 +1,2 @@
 ---
-- name: install redis
-  apt: pkg={% raw %}{{ item }}{% endraw %} state=latest
-  with_items:
-    - redis-server
+- include: 'redis.yml'

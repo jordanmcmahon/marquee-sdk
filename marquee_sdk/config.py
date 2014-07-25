@@ -3,6 +3,7 @@ from uuid       import uuid4
 
 
 SDK_DIR                 = dirname(__file__)
+DEFAULT_MARQUEE_TOKEN   = 'r0_35d6671277c356e582c07f490121483dc05d6a40'
 DIGITAL_OCEAN_CONFIG    = join(SDK_DIR, '.digitalocean')
 SLACK_CONFIG            = join(SDK_DIR, '.slack')
 TEMPLATE_DIR            = join(SDK_DIR, 'scaffolding')

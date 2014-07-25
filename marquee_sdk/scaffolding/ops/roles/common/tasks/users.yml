@@ -1,0 +1,4 @@
+---
+- name: add user '{{ project_name }}'
+  user: name='{{ project_name }}' state='present' group='admin'
+
