@@ -1,7 +1,6 @@
 from flask              import Flask, render_template, abort, redirect
 from flask.ext.cache    import Cache
 
-from .views             import (PublicationView, loadPublication)
 from .template_helpers  import *
 
 import os
@@ -25,33 +24,25 @@ def create_app():
     # Configure app based on .env file
     app.config.from_object(settings)
 
-    # Automatically inject stuff into the context
-    app.context_processor(inject_publication)
-
     # Add various items to the template globals
     app.jinja_env.globals.update({
-        'ENVIRONMENT'       : settings.ENVIRONMENT,
-        'DEBUG'             : settings.DEBUG,
-        'READER_TOKEN'      : settings.CONTENT_API_TOKEN,
-        'CONTENT_API_ROOT'  : settings.CONTENT_API_ROOT,
-    })
-    app.jinja_env.globals.update(staticURL=staticURL)
-    app.jinja_env.globals.update(mediaURL=mediaURL)
+            'ENVIRONMENT'       : settings.ENVIRONMENT,
+            'DEBUG'             : settings.DEBUG,
+            'READER_TOKEN'      : settings.CONTENT_API_TOKEN,
+            'CONTENT_API_ROOT'  : settings.CONTENT_API_ROOT,
+            'staticURL'         : staticURL,
+            'mediaURL'          : mediaURL,
+        })
 
-    app.jinja_env.filters['toItemSize']     = toItemSize
-    app.jinja_env.filters['renderBlock']    = renderBlock
-    app.jinja_env.filters['contentPreview'] = contentPreview
-    app.jinja_env.filters['renderCover']    = renderCover
-    app.jinja_env.filters['asModel']        = asModel
-    app.jinja_env.filters['slugify']        = slugify
-
-    # Register views and routes
-    PublicationView.register(app, route_base='/')
-
-    # Activate hyperdrive if enabled
-    if settings.HYPERDRIVE:
-        from hyperdrive.main import hyperdrive
-        app.register_blueprint(hyperdrive, url_prefix="/_hyperdrive")
+    app.jinja_env.filters.update({
+            'toItemSize'        : toItemSize,
+            'renderBlock'       : renderBlock,
+            'contentPreview'    : contentPreview,
+            'renderCover'       : renderCover,
+            'asModel'           : asModel,
+            'slugify'           : slugify,
+            'cgiEscape'         : cgiEscape,
+        })
 
     return app
 

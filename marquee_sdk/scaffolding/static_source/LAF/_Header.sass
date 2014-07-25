@@ -1,0 +1,76 @@
+.Header
+    +border-radius(4px)
+    background-image: linear-gradient(#F4F6F7, #E3E8EA)
+    +single-box-shadow($hoff: 0, $voff: 1px, $blur: 1px, $color: rgba($palette-black, 0.15))
+    padding: 6px 6px 6px 0
+    ._NavItem
+        display: inline-block
+        padding: 10px
+        margin-right: font-size(0.5)
+
+    ._SearchInput,
+    ._SearchLabel,
+    a._NavItem:link,
+    a._NavItem:link:visited
+        +font-stack('Open Sans', 300)
+        +font-size(13/16)
+        letter-spacing: 1px
+        color: rgba($palette-black, 0.3)
+        &a:hover
+            color: rgba($palette-black, 0.7)
+
+    ._NavItem.-home
+        width: 32px
+        height: 32px
+        display: inline-block
+        vertical-align: middle
+        +inline-bg-image('Home', $ext: 'png')
+        +background-size(50%)
+        border-right: 1px solid rgba($palette-black, 0.2)
+        opacity: 0.5
+        font-size: 0 !important
+        &:hover
+            opacity: 1
+            border-right: 1px solid rgba($palette-black, 0.1)
+
+
+    ._SearchInput
+        height: 30px
+        +border-radius(19px)
+        border: 1px solid #F4F6F7
+        border-bottom-color: #E3E8EA
+        padding: 0 1em
+        +single-box-shadow($hoff: 0, $voff: 1px, $blur: 0, $color: rgba($palette-black, 0.20), $inset: true)
+        &:focus
+            outline: 0
+            border-color: $color-marquee
+            color: rgba($palette-black, 0.7)
+
+    ._SearchButton
+        +inline-bg-image('SearchButton', $ext: 'png')
+        background-color: transparent
+        font-size: 0
+        width: 15px
+        height: 15px
+        border: 0
+        vertical-align: middle
+        margin-left: -34px
+        margin-top: -1px
+        opacity: 0.5
+        &:hover
+            opacity: 1
+            cursor: pointer
+
+    ._SearchCancel
+        +inline-bg-image('Close', $ext: 'png')
+        width: 15px
+        height: 15px
+        margin-left: 25px
+        position: relative
+        top: 3px
+        color: transparent
+        overflow: hidden
+        display: inline-block
+        opacity: 0.5
+        &:hover
+            opacity: 1

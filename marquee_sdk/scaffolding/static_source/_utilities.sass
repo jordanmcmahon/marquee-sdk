@@ -13,3 +13,66 @@
     +background-size($background_size)
     @if $color
         color: $color
+
+
+@mixin intrinsic-ratio($ratio: 16/9)
+    position        : relative
+    padding-bottom  : percentage(1/$ratio)
+    padding-top     : 30px
+    overflow        : hidden
+    max-width       : 100%
+    height          : 0
+    height          : auto
+
+@mixin intrinsic-ratio-content
+    position    : absolute
+    top         : 0
+    left        : 0
+
+$break-extra_small : 640px  !default
+$break-small       : 768px  !default
+$break-medium      : 1024px !default
+$break-large       : 1280px !default
+$break-extra_large : 1440px !default 
+
+
+@mixin respond-to-element-lte-extra_small()
+    &[max-width~="#{ $break-extra_small }"]
+        @content
+
+@mixin respond-to-element-gt-extra_small()
+    &[min-width~="#{ $break-extra_small + 1 }"]
+        @content
+
+@mixin respond-to-element-gt-small()
+    &[min-width~="#{ $break-small + 1 }"]
+        @content
+
+@mixin respond-to-element-gt-medium()
+    &[min-width~="#{ $break-medium + 1 }"]
+        @content
+
+@mixin respond-to-element-gt-large()
+    &[min-width~="#{ $break-large + 1 }"]
+        @content
+
+@mixin respond-to-element-gt-extra_large()
+    &[min-width~="#{ $break-extra_large + 1 }"]
+        @content
+
+@mixin cover-image()
+    +background-size(cover)
+    background-position: center center
+    background-repeat: no-repeat
+
+@mixin layout-centered-main()
+    margin: 0 auto
+    max-width: $Block-column_width--main
+
+@mixin card-container()
+    +box-sizing(border-box)
+    padding: 1.5rem
+    margin-bottom: 1.5rem
+
+@mixin push-top()
+    padding-top: 120px

@@ -1,0 +1,22 @@
+{%- with cover_url=collection.cover(640) -%}
+<div class="CollectionCard {% if cover_url %}-has_media{% endif %} {% if include_summary %}-has_summary{% endif %}">
+    {%- if cover_url -%}
+        <a href="{{ collection.link }}" class="_Media">
+            <div class="_MediaContent" style="background-image: url({{ cover_url }})">
+            </div>
+        </a>
+    {%- endif -%}
+    <div class="_Info">
+        <h2 class="_Title">
+            <a href="{{ collection.link }}">
+                {{ collection.title }}
+            </a>
+        </h2>
+        {%- if include_summary -%}
+            <p class="_Summary">
+                {{ collection.description }}
+            </p>
+        {%- endif -%}
+    </div>
+</div>
+{%- endwith -%}

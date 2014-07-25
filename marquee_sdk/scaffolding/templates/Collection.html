@@ -1,20 +1,31 @@
-{%- raw -%}
 {% extends "_base.html" %}
 
 {% block view_content %}
+    <div class="Collection__">
 
-    <section class="Collection -has_items">
+        {% set cover_url=collection.cover(1280) %}
+        <header class="_Header__">
+            <div class="CollectionCover {% if cover_url %}-has_cover{% else %}-no_cover{% endif %}">
+                <div class="_Media"{% if cover_url %} style="background-image: url('{{ cover_url }}');"{% endif %}>
+                    <div class="_Info">
+                        <h1 class="_Title">{{ collection.title }}</h1>
+                        <div class="_Meta">
+                            Collection
+                        </div>
+                        {%- if collection.description -%}
+                            <div class="_Summary">{{ collection.description }}</div>
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </header>
 
-       {%- include "_includes/CollectionCover.html" -%}
-
-        <div class="CollectionItems">
+        <div class="_Results__">
             {%- for story in collection.stories() -%}
-                {% include "_includes/StoryCard.html" %}
+                {%- with include_summary=True -%}
+                    {%- include "Cards/StoryCard.html" -%}
+                {%- endwith -%}
             {%- endfor -%}
         </div>
-
-    </section>
-
-
+    </div>
 {% endblock %}
-{%- endraw -%}

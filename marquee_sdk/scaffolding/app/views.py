@@ -1,26 +1,73 @@
 from flask              import render_template, abort, request
-from flask.ext.classy   import FlaskView, route
 
-from .utils             import loadPublication, getParam, jsonResponse
+from .main              import app
 
-class PublicationView(FlaskView):
+import pytz
+from datetime import datetime
+from random import random, randint, sample, choice
 
-    def index(self):
-        publication = loadPublication()
-        stories = publication.stories()
-        return render_template('Home.html', stories=stories)
+from hyperdrive2.models import StorySet, CollectionSet, Story
+from hyperdrive2.channels import Channel
 
-    @route('/api/stories/')
-    def stories(self):
-        publication = loadPublication()
-        offset  = getParam(request, '_offset', 0, int)
-        limit   = getParam(request, '_limit', 20, int)
-        query   = {}
+from app import settings
 
-        category = getParam(request, 'category', '', str)
-        if category:
-            query['category'] = category
+from content import Container
 
-        stories = publication.stories(**query).sort('-first_published_date').offset(offset).limit(limit)
-        return jsonResponse([s.toJSONSafe(link_root=request.host_url[:-1]) for s in stories])
 
+from pyes import *
+
+es_conn = ES(settings.ELASTIC_SEARCH_URL)
+
+@app.route('/')
+def home_view():
+    main_stories = StorySet.all()
+    collections = [p['content'] for p in Channel('collection')]
+    sponsored_collection = [p['content'] for p in Channel('sponsor')]
+    if len(sponsored_collection) > 0:
+        sponsored_collection = sponsored_collection[0]
+    return render_template('Home.html',
+            main_stories            = main_stories,
+            collections             = collections,
+            sponsored_collection    = sponsored_collection,
+        )
+
+@app.route('/search/')
+def search_view():
+    
+    q = request.args.get('q')
+    if q:
+        query = MultiMatchQuery([
+            "title",
+            "byline",
+        ], q)
+        resultset = es_conn.search(
+            query   = query,
+            indices = "zee",
+            doc_types = ["story"],
+        )
+        results = list(resultset)
+        results = map(lambda r: StorySet.get(r.slug), results)
+    else:
+         results = StorySet.all()
+    return render_template('Search.html',
+            results = results,
+            q = q
+        )
+
+@app.route('/stories/<story_slug>/')
+def story_view(story_slug=None, collection_slug=None):
+    story = StorySet.get(story_slug)
+    if not story:
+        abort(404)
+    return render_template('Story.html',
+            story       = story,
+        )
+
+@app.route('/collections/<collection_slug>/')
+def collection_view(collection_slug=None):
+    collection = CollectionSet.get(collection_slug)
+    if not collection:
+        abort(404)
+    return render_template('Collection.html',
+            collection       = collection,
+        )

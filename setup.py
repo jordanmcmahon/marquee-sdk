@@ -1,4 +1,8 @@
 from distutils.core import setup
+from pip.req        import parse_requirements
+
+install_reqs    = parse_requirements('requirements.txt')
+reqs            = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='marquee-sdk',
@@ -11,8 +15,5 @@ setup(
     data=['marquee_sdk/templates'],
     scripts=['bin/marquee'],
     url='http://github.com/marquee/marquee-sdk',
-    install_requires=[
-        'click >= 1.1',
-        'ansible >= 1.6',
-    ]
+    install_requires=reqs,
 )

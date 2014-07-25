@@ -1,0 +1,71 @@
+
+$ContentCard-padding            : 1.5rem                !default
+$ContentCard-padding--media     : $ContentCard-padding  !default
+$ContentCard-padding--info      : $ContentCard-padding  !default
+
+$ContentCard-media_ratio        : 1                     !default
+
+
+
+%ContentCard
+
+    $_media_percentage: percentage($ContentCard-media_ratio/2)
+    $_info_percentage: percentage(1 - $ContentCard-media_ratio/2)
+
+    margin: 0 0 $ContentCard-padding
+
+    +box-sizing(border-box)
+    height      : auto
+    clear       : both
+    position    : relative
+    display     : block
+    width       : 100%
+    ._Summary
+        text-overflow: ellipsis
+    ._Media
+        display: block
+    ._MediaContent
+        +background-size(cover)
+        background-position : center
+        width               : 100%
+        height              : 100%
+
+    +respond-to-element-lte-extra_small
+        ._Media
+            +intrinsic-ratio(16/9)
+        ._MediaContent
+            +intrinsic-ratio-content()
+    ._Info
+        +box-sizing(border-box)
+        padding: 0 0 $ContentCard-padding--info
+
+    ._SuperMeta
+        margin-bottom: $ContentCard-padding--info
+
+    // Used for enabling general positioning of the _Media block
+    &.-has_media
+        min-height: 300px
+        ._Media
+            margin: $ContentCard-padding--media 0
+        +respond-to-element-gt-extra_small
+            ._Media
+                margin      : 0
+                position    : absolute
+                top         : $ContentCard-padding--media
+                bottom      : $ContentCard-padding--media
+                width       : calc(#{ $_media_percentage } - #{ 1.5 * $ContentCard-padding--media })
+            ._Info
+                max-width   : calc(#{ $_info_percentage } - #{ 1.5 * $ContentCard-padding--info })
+                padding     : $ContentCard-padding--info 0
+
+    &.-media_side--left
+        +respond-to-element-gt-extra_small
+            ._Media
+                left: 0
+            ._Info
+                margin-left: $_media_percentage
+
+    &.-media_side--right
+        +respond-to-element-gt-extra_small
+            ._Media
+                right: 0

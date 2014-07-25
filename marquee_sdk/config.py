@@ -1,10 +1,27 @@
-from os.path import dirname, expanduser, join
+from os.path    import dirname, expanduser, join
+from uuid       import uuid4
+
 
 SDK_DIR                 = dirname(__file__)
 DIGITAL_OCEAN_CONFIG    = join(SDK_DIR, '.digitalocean')
+SLACK_CONFIG            = join(SDK_DIR, '.slack')
 TEMPLATE_DIR            = join(SDK_DIR, 'scaffolding')
+DEPLOY_LOCK_PATH        = join('/', 'tmp', 'deploy.lock')
 PUB_KEY                 = join(expanduser('~'), '.ssh', 'id_rsa.pub')
 PROVIDERS               = ['digitalocean',]
+SERVICES                = ['slack', 'digitalocean']
+RUNTIME_CONFIG          = {
+    'project_name'      : None,
+    'host'              : None,
+    'domain'            : None,
+    'marquee_token'     : None,
+    'cache_soft_expiry' : 10,
+    'content_api_root'  : 'marquee.by/content/',
+    'lib_cdn_root'      : 'marquee-cdn.net',
+    'asset_cdn_root'    : 'assets.marquee-cdn.net/',
+    'static_url'        : '/static/',
+    'secret_key'        : uuid4().hex,
+}
 
 class FakeSectionHead(object):
     def __init__(self, fp):

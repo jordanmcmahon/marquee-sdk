@@ -1,7 +1,35 @@
-{%- raw -%}
 {% extends "_base.html" %}
 
 {% block view_content %}
-    Home page
+    <div class="Home__">
+        {%- if sponsored_collection -%}
+            <div class="_Sponsored__">
+                <div class="SponsoredContent">
+                    <h1 class="_Heading">Sponsored</h1>
+                    {%- with include_summary=True -%}
+                    {%- with collection=sponsored_collection -%}
+                        {%- include "Cards/CollectionCard.html" -%}
+                    {%- endwith -%}
+                    {%- endwith -%}
+                </div>
+            </div>
+        {%- endif -%}
+        <div class="_Main__">
+            <div class="MainContent">
+                {%- for story in main_stories -%}
+                    {%- with include_summary=True -%}
+                        {%- include "Cards/StoryCard.html" -%}
+                    {%- endwith -%}
+                {%- endfor -%}
+            </div>
+        </div><div class="_Secondary__">
+            <div class="CollectionList">
+                <h1 class="_Heading">Collections</h1>
+                {%- for collection in collections -%}
+                <!-- {{ collection.id }} -->
+                    {%- include "Cards/CollectionCard.html" -%}
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
 {% endblock %}
-{%- endraw -%}

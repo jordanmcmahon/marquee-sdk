@@ -1,4 +1,3 @@
-{%- raw -%}
 {#
 This fragment initializes the [Params manager](https://github.com/marquee/params).
 #}
@@ -7,4 +6,3 @@ d(this.pushUnescaped,this);this.push=d(this.push,this);this.setUnescaped=d(this.
 c.push)throw Error("Cannot push subparameter '"+f+"."+a+"'. '"+f+"' is not an Array.");throw Error("Cannot set subparameter '"+f+"."+a+"'. '"+f+"' is not an object.");}if(0===d.length){if(null!=c[a]&&!b.push){if(this._strict)throw Error("Param '"+a+"' was already set with `"+c[a]+"`");"undefined"!==typeof console&&null!==console&&"function"===typeof console.warn&&console.warn("Param '"+a+"' overridden (`"+c[a]+"` with `"+e+"`)")}b.push?(null==c[a]&&(c[a]=[]),c[a].push(e)):c[a]=e}else null==c[a]&&
 (c[a]={}),c=c[a];f=a}return this};b.prototype.setUnescaped=function(a,b){return this.set(a,b,{unescape:!0})};b.prototype.push=function(a,b){return this.set(a,b,{push:!0})};b.prototype.pushUnescaped=function(a,b){return this.set(a,b,{push:!0,unescape:!0})};b.prototype.getAll=function(){var a,b,d;b={};for(a in this)d=this[a],0>n.call(g,a)&&(b[a]=d);return b};b.prototype.unescape=h;return b}();window.params=new k}).call(this);
 </script>
-{%- endraw -%}

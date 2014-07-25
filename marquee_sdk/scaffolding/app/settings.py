@@ -77,4 +77,6 @@ CACHE_SOFT_EXPIRY       = int(os.environ['CACHE_SOFT_EXPIRY'])  # minutes
 PUBLICATION_SHORT_NAME  = os.environ['PUBLICATION_SHORT_NAME']
 PUBLICATION_NAME        = os.environ.get('PUBLICATION_NAME', u'')
 
-HYPERDRIVE              = asBool('HYPERDRIVE', False)
+ELASTIC_SEARCH_URL      = os.environ.get('ELASTIC_SEARCH_URL', "127.0.01:9200")
+ELASTIC_SEARCH_USER     = os.environ.get('ELASTIC_SEARCH_USER', None)
+ELASTIC_SEARCH_PASSWORD = os.environ.get('ELASTIC_SEARCH_PASSWORD', None)

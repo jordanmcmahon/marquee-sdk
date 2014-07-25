@@ -1,12 +1,11 @@
-{%- raw -%}
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Designed and built with <3 in NYC by Marquee: http://marquee.by -->
+        <!-- Designed and built with <3 in NYC/Miami by Marquee: http://marquee.by -->
         <script>var _sf_startpt=(new Date()).getTime()</script>{# for Chartbeat #}
         <title>{% block html_title %}{% endblock %}</title>
 
-        <meta name="description" content="{% block meta_description %}{{ publication.get('description') }}{% endblock %}">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, minimal-ui">
         <meta charset="utf-8">
 
@@ -23,30 +22,22 @@
                 <meta name="{{ name }}" content="{{ content }}">
             {%- endfor -%}
         {%- endif -%}
-        <link rel="alternate" type="application/rss+xml" title="Narratively" href="/feed/">
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed/">
         {% block extra_head %}{% endblock %}
     </head>
     <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 
-        {% block view_header_container %}
-            {% include "_includes/Header.html" %}
-        {% endblock %}
+        {% include "_includes/Header.html" %}
 
-        {% block view_content_container %}
-            <div class="ViewContent">{% block view_content %}{% endblock %}</div>
-        {% endblock %}
+        {% block view_content %}{% endblock %}
 
-        {% block view_footer_container %}
-            <footer class="ViewFooter">{% block view_footer %}{% endblock %}</footer>
-        {% endblock %}
-
-        {% block branding_container %}
+        {%- block branding_container -%}
         <div class="Branding">
             <a class="_Link" href="http://marquee.by" title="Marquee: easier, faster, more beautiful web publishing">Published with Marquee</a>
         </div>
-        {% endblock %}
+        {%- endblock -%}
 
-        {% include "_includes/Params.html" %}
+        {%- include "_includes/Params.html" -%}
         <script>
             {% if DEBUG %}params.set('DEBUG', true);{% endif %}
             params.set('urls.api_root', '/api/stories/');
@@ -83,4 +74,3 @@
 
     </body>
 </html>
-{%- endraw -%}

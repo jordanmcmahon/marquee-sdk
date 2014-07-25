@@ -1,5 +1,5 @@
 from .data_loader   import data_loader
-from .models        import Publication
+from hyperdrive2.models        import Publication
 
 import json
 import settings

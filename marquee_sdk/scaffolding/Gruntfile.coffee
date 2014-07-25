@@ -30,6 +30,12 @@ module.exports = (grunt) ->
                     transform: ['coffeeify']
                     extension: ['coffee']
                     debug: DEBUG
+                    shim:
+                        'elementQuery':
+                            path: './static_source/vendor/elementQuery.js'
+                            exports: null
+                            depends:
+                                jquery: 'jQuery'
 
         compass:
             development:
@@ -240,6 +246,5 @@ module.exports = (grunt) ->
 
         'cleanupdist'
     ])
-
 
 

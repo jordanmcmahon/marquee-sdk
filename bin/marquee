@@ -1,196 +1,31 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/env python 
+# -x- coding: utf-8 -*-
+#!/usr/bin/env python
 
-from marquee_sdk.utils      import copy_template, load_config 
-from marquee_sdk.config     import (
-    PROVIDERS, 
-    SLACK_CONFIG,
-    PUB_KEY,
-    SERVICES,
-    TEMPLATE_DIR, 
-)
-#from marquee_sdk.notify     import SlackClient
-from marquee_sdk.providers  import DigitalOceanClient
-#from marquee_sdk.deploy     import DeployLock
+import click
+import os
 
-import  click
-import  ConfigParser
-import  fnmatch
-import  jinja2
-import  os
-import  re
-import  socket
-import  subprocess
-import  textwrap
-import  uuid
+plugin_folder = os.path.join(os.path.dirname(__file__), '..', 'marquee_sdk', 'commands')
 
-@click.group()
-def marquee():
-    pass
+class MarqueeCommandLineInterface(click.MultiCommand):
 
-@marquee.command()
-@click.argument('project_name')
-def startproject(project_name):
-    '''Initialize a new Marquee Runtime project'''
-    click.echo("## Configure new project")
+    def list_commands(self, ctx):
+        rv = []
+        for filename in os.listdir(plugin_folder):
+            if filename.endswith('.py'):
+                print filename
+                rv.append(filename[:-3])
+        rv.sort()
+        return rv
 
-    PROJECT_PATH    = os.path.join(os.getcwd(), project_name)
-    private_ip      = click.prompt(
-        'Assign a Private IP address to this project (10.0.1.x)'
-    )
-    marquee_token   = click.prompt('Enter your Marquee API Token')
-    secret_key      = uuid.uuid4().hex
+    def get_command(self, ctx, name):
+        ns = {}
+        fn = os.path.join(plugin_folder, '{0}.py'.format(name))
+        with open(fn) as f:
+            code = compile(f.read(), fn, 'exec')
+            eval(code, ns, ns)
+        return ns['cli']
 
-    # Create new directory for project
-    if not os.path.exists(PROJECT_PATH):
-        os.makedirs(PROJECT_PATH)
-    else:
-        click.echo('{0} already exists. Exiting.'.format(PROJECT_PATH))
-        quit()
+cli = MarqueeCommandLineInterface(help="The Marquee Software Development Kit")
 
-    # Sanitize IP input
-    try:
-        socket.inet_aton(private_ip)
-    except socket.error:
-        click.echo(
-            '{0} is not a valid IP address. Exiting.'.format(private_ip)
-        )
-        quit()
-
-    # Copy project structure
-    click.echo('## Copying project files')
-    for root, dirs, files in os.walk(TEMPLATE_DIR):
-        pattern = re.compile('^.+\/scaffolding\/(.+)$')
-        try:
-            relative_path = pattern.findall(root)[0]
-        except IndexError:
-            relative_path = '.'
-        for d in dirs:
-            os.makedirs(os.path.join(PROJECT_PATH, relative_path, d))
-        for f in files:
-            click.echo(os.path.join(relative_path, f))
-            copy_template(
-                src             = os.path.join(relative_path, f),
-                dest            = os.path.join(
-                                    PROJECT_PATH, relative_path, f
-                                ),
-                project_name    = project_name,
-                private_ip      = private_ip,
-                marquee_token   = marquee_token,
-                secret_key      = secret_key
-            )
-
-    exit_message = textwrap.dedent("""
-    # Marquee Runtime Generated!
-
-    Make sure you have an entry for this project in `/etc/hosts`.
-
-        {private_ip}    {project_name}.local
-
-    Then change into your new project directory and fire up the
-    development environment
-
-        $ cd {project_name}
-        $ vagrant up
-
-    """.format(**locals()))
-
-    click.echo(exit_message)
-
-@marquee.command()
-def setup(service):
-    if service not in SERVICES:
-        print '{0} is not a supported service'.format(service)
-        quit()
-    
-
-   
-@marquee.command()
-@click.argument('provider')
-def deploy(provider):
-    if provider not in PROVIDERS:
-        print '{0} is not a valid provider'.format(provider)
-        quit()
-
-    if os.path.exists(SLACK_CONFIG):
-        slack_client = SlackClient()
-    else:
-        slack_client = None
-
-    if provider == 'digitalocean':
-        do_config       = load_config('.digitalocean')
-        access_token    = do_config['access_token']
-        do_client       = DigitalOceanClient(
-                            access_token=access_token
-                        )
-
-        # Fetch ssh keys, make sure ours is included
-        list_keys       = do_client.list_keys()
-        hostname        = socket.gethostname()
-        key_exists      = False
-        for k in list_keys:
-            if hostname == k['name']:
-                key_exists = True
-        if key_exists:
-            print 'Ok, your public key was found on Digital Ocean.'
-        else:
-            print 'Your public key was not found on Digital Ocean'
-
-        # Add key if it doesn't exist
-        if not key_exists:
-            try:
-                public_key  = open(PUB_KEY, 'r').read()
-            except IOError:
-                print 'No public key found at {0}'.format(PUB_KEY)
-                quit()
-            do_client.create_key(public_key=public_key)
-
-        # Check if droplet exists
-        droplets        = do_client.list_droplets() 
-        target_droplet  = None
-        for d in droplets:
-            if d['name'] == do_config['droplet_name']:
-                target_droplet = d
-                print 'Ok, a Droplet with the name {0} already exists'.format(do_config['droplet_name'])
-
-        # If the droplet doesn't exist, create it
-        if target_droplet is None:
-            print 'Creating droplet {0}. Please wait...'.format(do_config['droplet_name'])
-            target_droplet = do_client.create_droplet(
-                                name    = do_config['droplet_name'],
-                                region  = do_config['region'],
-                                size    = do_config['size'],
-                                image   = do_config['image'],
-                            )
-            status = 'in-progress'
-            while status != 'completed':
-                last_action = do_client.droplet_actions(target_droplet['id'])
-                status      = last_action['status']
-                print '.'
-                sleep(5)
-            print 'Ok, successfully created droplet {0}'.format(target_droplet['name'])
-
-        
-        # Build playbook command
-        playbook        = os.path.join('ops', 'digitalocean.yml')
-        inventory       = os.path.join('ops', 'inventory', provider)
-        playbook_vars   = os.path.join('ops', 'vars', 'digitalocean')
-        playbook_cmd    = ['ansible-playbook', playbook, '-i', inventory, '-e', '@{0}'.format(playbook_vars)]
-        
-        # Run playbook
-        print 'Begin running playbook ({0})'.format(playbook)
-#       slack_client.notify('Deploy started by {0}'.format(socket.gethostname())
-        try:
-            ansible = subprocess.Popen(playbook_cmd)
-            ansible.wait()
-        except KeyboardInterrupt:
-            cancelled = True
-            pass
-
-        # All done
-        print 'Completed deployment to Digital Ocean'
-        quit()
-
-# Make this whole thing run
 if __name__ == '__main__':
-    marquee()
+    cli() 

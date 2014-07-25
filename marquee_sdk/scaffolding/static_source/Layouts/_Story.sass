@@ -1,40 +1,7 @@
-.ViewContent.Story
-    padding-bottom: $global-padding--body
-.Story_Content
-    // Necessary for the related stories layout.
-    position: relative
-
-.Story_Cover
-    +extend(Cover, intrinsic_ratio)
-    overflow: hidden
-    +Cover-set_ratio(3/4)
-    +respond-to-gt-extra_small
-        +Cover-set_ratio(5/4)
-    +respond-to-gt-small
-        +Cover-set_ratio(14/9)
-    +respond-to-gt-medium
-        +Cover-set_ratio(16/9)
-    +respond-to-gt-large
-        +Cover-set_ratio(21/9)
 
 
-.Story_CoverImage
-    +extend(Cover_Image)
-    +respond-to-gt-medium
-        background-attachment: fixed
-.Story_Info
-    +extend(Cover_Info)
-    max-width: $Block-column_width--text
-    margin-left: auto
-    margin-right: auto
-    margin-top: 4%
-    +respond-to-gt-extra_small
-        margin-top: 10%
-
-.Story_ScrollIndicator  
-    position    : absolute
-    bottom      : 10px
-    left        : 0
-    right       : 0
-    height      : 20px
-
+.Story__
+    ._Content__
+        padding-top: 50px
+        padding-bottom: $global-padding--body
+        position: relative

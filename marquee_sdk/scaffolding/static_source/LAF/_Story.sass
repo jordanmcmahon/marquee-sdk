@@ -1,4 +1,4 @@
-.Story_Content
+.Story__ ._Content__
     padding-bottom: 4em
     -webkit-font-smoothing: antialiased
     h2, h3
@@ -11,7 +11,10 @@
     h3
         font-size: 1rem
     p, blockquote, pre
-        line-height: 1.6
+        +font-stack('Open Sans', 500)
+        +font-size(1)
+        color: rgba($palette-black, 0.7)
+        line-height: 1.8
         +respond-to-lte-extra_small
             font-size: 1rem
     blockquote
@@ -20,7 +23,7 @@
         padding         : 1em 2em
         margin-top      : 1em
         margin-bottom   : 1em
-        color           : $color-red
+        color           : $palette-red
         +respond-to-gt-extra_small
             font-size: 28px
     a
@@ -38,26 +41,27 @@
     +state(loaded)
         opacity: 1
     +state(zoomed, false)
-        .Caption
+        ._Caption
             +transition-property(bottom, opacity)
             +transition-duration($global-transition_duration)
             position    : relative
             bottom      : 0px
             opacity     : 1
     +state(zoomed)
-        .ImageBlock_Image
+        ._Image
             visibility: hidden
-        .Caption
+        ._Caption
             opacity: 0
             bottom: 100px
 
-.ImageBlock_Image
-    display: block
-    position: relative
-    +layer(images)
-    +state(zoomable)
-        cursor: zoom-in
-        cursor: -webkit-zoom-in
+.ImageBlock
+    ._Image
+        display: block
+        position: relative
+        +layer(images)
+        +state(zoomable)
+            cursor: zoom-in
+            cursor: -webkit-zoom-in
 
 
 .Zoomer
@@ -75,13 +79,11 @@
     +layer(overlays)
 
 
-%Caption
-    border      : 1px solid $color-stroke
-    padding     : 1em
-    font-size   : 14px
-    color       : $color-gray
-    background  : white
-    +layer(text)
-    +respond-to-lte-extra_small
-        border-left: 0
-        border-right: 0
+.ImageBlock,
+.EmbedBlock
+    ._Caption
+        font-size   : 14px
+        +font-stack('Open Sans', 300)
+        padding     : 10px
+        background  : white
+        +layer(text)

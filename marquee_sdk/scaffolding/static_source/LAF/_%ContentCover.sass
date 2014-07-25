@@ -1,0 +1,27 @@
+%ContentCover
+    ._Title
+        +font-stack('Open Sans', 300)
+        +font-size(1.25)
+        padding-bottom: font-size(1.25)
+        +single-text-shadow(0 1px 1px rgba($palette-black, 0.4))
+        +respond-to-gt-extra_small
+            +font-size(2.25)
+
+    &.-no_cover
+        ._Title
+            color: rgba($palette-black, 0.8)
+        ._Meta
+            color: rgba($palette-black, 0.3)
+
+    ._Byline::after
+        content: '\2022'
+
+    &.-has_cover
+        ._Media
+            +cover-image
+        ._Info
+            padding-bottom: 20px
+            padding-top: 80px
+            color: white
+            +single-text-shadow($blur: 4px, $color: $palette-black)
+            background-image: linear-gradient(rgba($palette-black,0), rgba($palette-black,0.40))

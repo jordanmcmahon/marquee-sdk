@@ -1,0 +1,27 @@
+<header class="Header">
+    <nav class="_Nav">
+        <a class="_NavItem -home" href="/">Home</a>
+        {%- if collection -%}
+            <a class="_NavItem" href="{{ collection.link }}">
+                {{ collection.title }}
+            </a>
+        {%- endif -%}
+        {%- if story -%}
+            <a class="_NavItem" href="{{ story.link }}">
+                {{ story.title }}
+            </a>
+        {%- endif -%}
+    </nav>
+    {%- if not collection and not story -%}
+        <form class="_Search" action="/search/" method="GET">
+            {%- if q -%}
+                <label class="_SearchLabel" for="q">Results for:</label>
+            {%- endif -%}
+            <input class="_SearchInput" placeholder="Search" value="{{ q }}" name="q">
+            <button class="_SearchButton">Search</button>
+            {%- if q -%}
+                <a class="_SearchCancel" href="/">Cancel</a>
+            {%- endif -%}
+        </form>
+    {%- endif -%}
+</header>

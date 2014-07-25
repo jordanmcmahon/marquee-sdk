@@ -1,6 +1,8 @@
 bin/marquee
 marquee_sdk/__init__.py
 marquee_sdk/config.py
+marquee_sdk/deploy.py
+marquee_sdk/notify.py
 marquee_sdk/providers.py
 marquee_sdk/utils.py
 marquee_sdk.egg-info/PKG-INFO

@@ -1,0 +1,34 @@
+{%- with cover_url=story.cover(640) -%}
+<div class="StoryCard {% if cover_url %}-has_media -media_side--right{% endif %} {% if include_summary %}-has_summary{% endif %}">
+    {%- if cover_url -%}
+        <a href="{{ story.link }}" class="_Media">
+            <div class="_MediaContent" style="background-image: url({{ cover_url }})">
+            </div>
+        </a>
+    {%- endif -%}
+    <div class="_Info">
+        <h2 class="_Title">
+            <a href="{{ story.link }}">
+                {{ story.title }}
+            </a>
+        </h2>
+        <div class="_SubMeta">
+            <span class="_Byline">
+                {{ story.byline }}
+            </span>
+            <time class="_Date" datetime="{{ story.published_date.strftime('%Y-%m-%dT%H:%M:%SZ') }}">
+                {{ story.published_date.strftime('%-d %B %Y') }}
+            </time>
+        </div>
+        {%- if include_summary -%}
+            <p class="_Summary">
+                {% if story.summary %}
+                    {{ story.summary }}
+                {% else %}
+                    {{ story|contentPreview }}
+                {% endif %}
+            </p>
+        {%- endif -%}
+    </div>
+</div>
+{%- endwith -%}

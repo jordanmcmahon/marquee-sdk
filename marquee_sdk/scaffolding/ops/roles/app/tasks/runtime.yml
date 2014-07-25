@@ -5,11 +5,6 @@
     - 'libxml2-dev'
     - 'libxslt1-dev'
 
-- name: copy runtime environment config
-  template: src='env.j2' dest='/srv/runtime/.env'
-  notify:
-    - restart runtime
-
 - name: add nginx configuration for runtime
   template: src='nginx.site.j2' 
             dest='/etc/nginx/sites-available/runtime'

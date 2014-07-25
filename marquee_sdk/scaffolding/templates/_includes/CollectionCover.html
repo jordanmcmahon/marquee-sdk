@@ -1,5 +1,4 @@
-{%- raw -%}
- <div class="CollectionCover" style="background-image: url({{ collection.cover(1280) }})">
+<div class="CollectionCover" style="background-image: url({{ collection.cover(1280) }})">
     {% if collection.week_start_date %}
     <time class="_Date" datetime="{{ collection.week_start_date.strftime('%Y-%m-%dT%H:%M:%SZ') }}">
         Week of {{ collection.week_start_date.strftime('%b %-d, %Y') }}
@@ -12,4 +11,3 @@
         {% endif %}
     </div>
 </div>
-{%- endraw -%}

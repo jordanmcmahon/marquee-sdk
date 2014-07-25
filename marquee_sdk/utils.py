@@ -1,6 +1,7 @@
 from .config import *
 
 import  ConfigParser
+import  click
 import  jinja2
 import  os
 import  shutil
@@ -45,3 +46,6 @@ def load_config(filepath, simple=True, section='config'):
         raise IOError
 
     return dict(config.items(section))
+
+def cli_response(msg):
+    click.echo(' - {0}'.format(msg))

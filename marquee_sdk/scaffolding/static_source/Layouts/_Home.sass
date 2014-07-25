@@ -1,0 +1,40 @@
+.Home__
+    +push-top
+
+    $sidebar_width--small   : 300px
+    $sidebar_width--medium  : 380px
+    $sidebar_width--large   : 460px
+
+    max-width   : $Block-column_width--text + $sidebar_width--large
+    margin      : 0 auto
+
+    +respond-to-gt-small
+        ._Main__
+            width: calc(100% - #{ $sidebar_width--small })
+            float: left
+            vertical-align: top
+        ._Secondary__
+            width: $sidebar_width--small
+            display: inline-block
+            float: right
+            vertical-align: top
+
+
+    +respond-to-gt-medium
+        ._Main__
+            width: calc(100% - #{ $sidebar_width--medium })
+        ._Secondary__
+            width: $sidebar_width--medium
+        ._Sponsored__
+            float: right
+            width: $sidebar_width--medium
+
+    +respond-to-gt-large
+        ._Main__
+            width: calc(100% - #{ $sidebar_width--large })
+        ._Secondary__
+            width: $sidebar_width--large
+        ._Sponsored__
+            width: $sidebar_width--large
+
+

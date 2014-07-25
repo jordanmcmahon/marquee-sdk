@@ -17,4 +17,7 @@ Marquee.RelatedStories  = require './Components/Story/RelatedStories.coffee'
 { GaugesEvents } = require './utilities.coffee'
 Marquee.gauges_events   = new GaugesEvents()
 
+require 'elementQuery'
+setTimeout(window.elementQuery,50)
+
 window.jQuery = window.$ = require 'jquery' if params.DEBUG

@@ -59,4 +59,3 @@ module.exports.QueryString =
         for k, v of query
             query_parts.push("#{ k }=#{ encodeURIComponent(v) }") if v
         return "?#{ query_parts.join('&') }"
-

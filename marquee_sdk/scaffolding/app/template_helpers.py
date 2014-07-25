@@ -4,7 +4,7 @@ from content.models     import instanceFromRaw
 from jinja2     import evalcontextfilter, Markup
 
 import rendering
-from .models    import modelFromRole
+from hyperdrive2.models    import modelFromRole
 
 import settings
 
@@ -18,9 +18,9 @@ def staticURL(path):
     Public: helper for including static media assets in templates.
 
     Example
-        {% raw %}
+        
         {{ staticURL('images/file.jpg') }}
-        {% endraw %}
+        
 
     path - a String path to the asset, relative to the root of the static folder
 
@@ -35,9 +35,9 @@ def mediaURL(path):
     Public: helper for including user-uploaded media in templates.
 
     Example
-        {% raw %}
+        
         {{ mediaURL('images/file.jpg') }}
-        {% endraw %}
+        
 
     path - a String path to the asset, relative to the root of the media folder
 
@@ -57,9 +57,7 @@ def toItemSize(count, floor=1, ceiling=5):
                     maximum size)
     ceiling     - (optional: 5) the highest number to use (for ensuring a
                     minimum size)
-    Examples
-        {%- raw -%}
-        {% set stories=publication.stories().limit(4) %}
+    Examples{% set stories=publication.stories().limit(4) %}
         {% for story in stories %}
             <div class="item-{{ stories|toItemSize }}">
                 ...
@@ -71,10 +69,7 @@ def toItemSize(count, floor=1, ceiling=5):
             <div class="item-{{ stories|toItemSize(floor=2, ceiling=4) }}">
                 ...
             </div>
-        {% endfor %}
-        {%- endraw -%}
-
-    Returns the str size name.
+        {% endfor %}Returns the str size name.
     """
 
     if count < floor:
@@ -122,17 +117,11 @@ def contentPreview(eval_ctx, story, char_limit=400, text_only=False, escape=True
     escape        - (optional:True) escape HTML entities in the text_only
                     content output
 
-    Examples
-
-        {%- raw -%}
-        {{ story|content_preview }}
+    Examples{{ story|content_preview }}
 
         {{ story|content_preview(char_limit=200) }}
 
-        {{ story|content_preview(text_only=True) }}
-        {%- endraw -%}
-
-    Returns a str of HTML up to `char_limit` content characters long (count
+        {{ story|content_preview(text_only=True) }}Returns a str of HTML up to `char_limit` content characters long (count
     doesn't include markup).
     """
     # Default to an empty string since this is for a template.
@@ -210,7 +199,7 @@ def renderCover(eval_ctx, obj):
 
     Examples
 
-        {% raw %}{{ story|render_cover }}{% endraw %}
+        {{ story|render_cover }}
 
     Returns a unicode HTML fragment, or empty string.
     """
@@ -281,3 +270,20 @@ def slugify(value):
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return Markup(re.sub('[-\s]+', '-', value))
+
+@evalcontextfilter
+def cgiEscape(eval_ctx, val):
+    """
+    Public: a filter that escapes html entities: < > & ' "
+
+    val - the str to escape
+
+    Returns the str markup for the block.
+    """
+    if val:
+        val = cgi_escape(val, quote=True)
+        val = val.replace("'",'&#x27;').replace('\n', ' ')
+        if eval_ctx.autoescape:
+            val = Markup(val)
+        return val
+    return ''
