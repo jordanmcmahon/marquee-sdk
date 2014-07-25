@@ -1,7 +1,7 @@
-[program:{% raw %}{{ project_name }}{% endraw %}]
-command=/srv/virtualenvs/{% raw %}{{ project_name }}{% endraw %}/bin/gunicorn -w 5 wsgi:application
-directory=/srv/{% raw %}{{ project_name }}{% endraw %}
+[program:{{ project_name }}]
+command=/srv/virtualenvs/{{ project_name }}/bin/gunicorn -w 5 wsgi:application
+directory=/srv/{{ project_name }}
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/supervisor/{% raw %}{{ project_name }}{% endraw %}.gunicorn.log
+stdout_logfile=/var/log/supervisor/{{ project_name }}.gunicorn.log
 redirect_stderr=True
