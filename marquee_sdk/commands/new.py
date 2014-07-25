@@ -8,6 +8,7 @@ from marquee_sdk.config import (
 )
 
 import click
+import json
 import os
 import re
 import shutil
@@ -27,7 +28,7 @@ def runtime():
     First, we'll need to give your project a name. It will be stored
     as a spaceless lowercase string.
 
-    Dashes (-) and underscores (_) are allowed.
+    Alphanumeric characters and dashes (-) are allowed.
     """))
     prompt_valid = False
     project_name = None
@@ -94,8 +95,11 @@ def runtime():
     """))
     click.confirm('Do you want to continue?', abort=True)
     with open(env_filepath, 'w') as env_file:
+        json_config = {}
         for key, value in RUNTIME_CONFIG.iteritems():
-            env_file.write('{0}={1}'.format(key.upper(), value))
+            json_config[key] = value
+        json.dump(json_config, env_file)
+
     cli_response('Marquee Runtime configuration written to {0}'.
             format(env_filepath))
 
