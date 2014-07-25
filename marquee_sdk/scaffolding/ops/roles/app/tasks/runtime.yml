@@ -27,7 +27,7 @@
         recurse=yes
 
 - name: install runtime python requirements
-        requirements='/srv/{{ project_name }}/requirements.txt'
+  pip:  requirements='/srv/{% raw %}{{ project_name }}{% endraw %}/requirements.txt'
         virtualenv="{% raw %}{{ runtime_venv }}{% endraw %}"
 
   notify:
