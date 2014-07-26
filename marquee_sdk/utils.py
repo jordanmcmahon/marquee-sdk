@@ -5,6 +5,7 @@ import  click
 import  jinja2
 import  os
 import  shutil
+import  textwrap
 
 template_loader = jinja2.FileSystemLoader(TEMPLATE_DIR)
 template_env    = jinja2.Environment(loader=template_loader)
@@ -19,6 +20,7 @@ def copy_template(src, dest, **kwargs):
 
         with open(dest, 'w') as f:
             f.write(contents)
+
 
 def load_config(filepath, simple=True, section='config'):
     """
@@ -45,6 +47,11 @@ def load_config(filepath, simple=True, section='config'):
         raise IOError
 
     return dict(config.items(section))
+
+def cli_explaination(msg):
+    click.echo(textwrap.dedent('''
+    {0}
+    '''.format(msg)))
 
 def cli_response(msg):
     click.echo(' - {0}'.format(msg))

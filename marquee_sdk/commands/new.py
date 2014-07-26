@@ -1,10 +1,9 @@
 from click import echo, prompt
 
-from marquee_sdk.utils  import cli_response, copy_template
+from marquee_sdk.utils  import cli_explaination, cli_response, copy_template
 from marquee_sdk.config import (
-    DEFAULT_MARQUEE_TOKEN,
     TEMPLATE_DIR,
-    RUNTIME_CONFIG,
+    MARQUEE_API_DEFAULTS as DEFAULTS,
 )
 
 import click
@@ -22,14 +21,15 @@ def cli():
 @cli.command()
 def runtime():
     echo("Let's create a new Marquee Runtime")
+    RUNTIME_CONFIG = {}
 
     # Ask for project name
-    echo(textwrap.dedent("""
+    cli_explaination("""
     First, we'll need to give your project a name. It will be stored
     as a spaceless lowercase string.
 
     Alphanumeric characters and dashes (-) are allowed.
-    """))
+    """)
     prompt_valid = False
     project_name = None
     while prompt_valid is False:
@@ -46,7 +46,7 @@ def runtime():
     RUNTIME_CONFIG['domain']        = '{0}.local'.format(project_name)
 
     # Ask for private IP
-    echo(textwrap.dedent("""
+    cli_explaination("""
     Next we'll need to assign a local private IP address to this runtime.
 
     This will allow you to access your local development environment
@@ -55,7 +55,7 @@ def runtime():
     You should check /etc/hosts for conflicts before choosing an IP.
 
     Sticking to the 10.0.1.2 - 10.0.1.255 range is generally safe.
-    """.format(project_name)))
+    """.format(project_name))
     private_ip          = None
     prompt_valid        = False
     while prompt_valid is False:
@@ -65,10 +65,28 @@ def runtime():
             prompt_valid = True
         except socket.error:
             echo('{0} is an invalid IP. Try again')
-    RUNTIME_CONFIG['host'] = private_ip
+
+    # Ask for Marquee Publication ID
+    cli_explaination("""
+    Please enter your Marquee Publication ID. This is sometimes called the
+    *slug* or *short name* of your publication.
+
+    If using the Marquee Editorial Tools, you can easily determine this by
+    looking at the URL. Your publication name will be the *foo* in *foo.marquee.by*
+    or the *bar* in *marquee.by/bar*. You can also find this ID in your
+    Publication's Settings module.
+
+    If you skip this step, we'll use the project name you just created.
+    """)
+    publication_slug = None
+    prompt_valid     = False
+    while prompt_valid is False:
+        publication_slug = click.prompt('Marquee Publication ID', default=DEFAULTS['publication_slug'])
+        prompt_valid = True # TODO validate this against API
+    RUNTIME_CONFIG['plublication_slug'] = publication_slug
 
     # Ask for Marquee Access Token
-    echo(textwrap.dedent("""
+    cli_explaination("""
     In order to access content on Marquee, you'll need the publication's
     Marquee Access Token.
 
@@ -77,23 +95,23 @@ def runtime():
     Otherwise, you can just skip this step and we'll use generic
     content we host for demo purpose consisting of short stories
     from Project Gutenberg (http://gutenberg.org).
-    """))
+    """)
     marquee_token = None
     prompt_valid  = False
     while prompt_valid is False:
-        marquee_token = click.prompt('Marquee Access Token')
+        marquee_token = click.prompt('Marquee Access Token',
+                            default=DEFAULTS['marquee_token'])
         prompt_valid  = True # TODO validate this against API
-    if marquee_token is None:
-        marquee_token = DEFAULT_MARQUEE_TOKEN
     RUNTIME_CONFIG['marquee_token'] = marquee_token
 
     # Write config file
     env_filepath = os.path.join(project_path, '.marquee-runtime')
-    echo(textwrap.dedent("""
+    cli_explaination("""
     Ok, now we'll save write thse settings (along with a few
     defaults) to a config file which will be used by the Marquee Runtime.
-    """))
-    click.confirm('Do you want to continue?', abort=True)
+    """)
+    click.confirm('Do you want to continue?', default=True)
+
     with open(env_filepath, 'w') as env_file:
         json_config = {}
         for key, value in RUNTIME_CONFIG.iteritems():
@@ -104,7 +122,7 @@ def runtime():
             format(env_filepath))
 
     # Copy runtime project structure
-    echo(textwrap.dedent("""
+    cli_explaination("""
     The Marquee Runtime provides a basic interface to a publication's
     content.
 
@@ -113,8 +131,10 @@ def runtime():
     free to poke through the generated code to see how things work,
     make modifications to suit your own purposes, or rip everything
     out and start from scratch.
-    """))
-    click.confirm('Do you want to continue?', abort=True)
+
+    By continuing, you will copy our default project structure
+    """)
+    click.confirm('Do you want to continue?', default=True)
     for root, dirs, files in os.walk(TEMPLATE_DIR):
         pattern = re.compile('^.+\/scaffolding\/(.+)$')
         try:
@@ -129,23 +149,27 @@ def runtime():
             copy_template(
                 src             = src,
                 dest            = dest,
-                project_name    = RUNTIME_CONFIG['project_name'],
-                runtime_domain  = RUNTIME_CONFIG['domain'],
-                runtime_host    = RUNTIME_CONFIG['host'],
+                project_name    = project_name,
+                host_ip         = private_ip,
+                runtime_domain  = '{0}.local'.format(project_name),
             )
             cli_response(src)
 
-    echo(textwrap.dedent("""
+    cli_explaination("""
     # Marquee Runtime Generated!
 
     Make sure you have an entry for this project in `/etc/hosts`.
 
         {private_ip}    {project_name}.local
 
-    Then change into your new project directory and fire up the
+    This is a handy one-liner for adding projects to /etc/hosts:
+
+        $ echo "{private_ip} {project_name}.local" | sudo tee -a /etc/hosts
+
+    Next change into your new project directory and fire up the
     development environment
 
         $ cd {project_name}
         $ vagrant up
 
-    """.format(**locals())))
+    """.format(**locals()))

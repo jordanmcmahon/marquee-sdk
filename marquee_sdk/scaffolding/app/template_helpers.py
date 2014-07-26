@@ -1,17 +1,13 @@
-from cgi        import escape as cgi_escape
-from content    import Text
+from cgi                import escape as cgi_escape
+from content            import Text
 from content.models     import instanceFromRaw
-from jinja2     import evalcontextfilter, Markup
-
-import rendering
-from hyperdrive2.models    import modelFromRole
+from jinja2             import evalcontextfilter, Markup
 
 import settings
+import rendering
 
 import re
 import unicodedata
-
-
 
 def staticURL(path):
     """

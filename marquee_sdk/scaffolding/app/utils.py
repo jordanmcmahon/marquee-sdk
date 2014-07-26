@@ -1,5 +1,5 @@
-from .data_loader   import data_loader
-from hyperdrive2.models        import Publication
+from .data_loader           import data_loader
+from hyperdrive2.models     import Publication
 
 import json
 import settings
@@ -11,11 +11,9 @@ def loadPublication():
     Returns the active Publication
     """
     publication_container = data_loader.load(
-        short_name=settings.PUBLICATION_SHORT_NAME,
+        short_name=settings.PUBLICATION_SLUG    # TODO change from `short_name` to `slug`
     )
     return Publication(publication_container)
-
-
 
 def getParam(req, param, default, validator):
     """
@@ -34,8 +32,6 @@ def getParam(req, param, default, validator):
     except ValueError:
         val = default
     return val
-
-
 
 def jsonResponse(data):
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})

@@ -1,2 +1,2 @@
 [development]
-{{ runtime_host }}
+{{ host_ip }}

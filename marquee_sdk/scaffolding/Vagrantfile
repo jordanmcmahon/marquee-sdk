@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.define 'development' do |dev|
         dev.vm.hostname = '{{ project_name }}-dev'
-        dev.vm.network 'private_network', ip: '{{ runtime_host }}'
+        dev.vm.network :private_network, ip: '{{ host_ip }}'
         dev.vm.synced_folder '.', '/srv/{{ project_name }}'
     end
 

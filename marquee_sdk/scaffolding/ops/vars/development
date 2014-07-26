@@ -1,13 +1,15 @@
 ---
-debug           : true
-project_name    : {{ project_name }}
-login_user      : vagrant
-login_group     : vagrant
-login_dir       : /home/vagrant
-runtime_user    : www-data
-runtime_group   : www-data
-runtime_host    : {{ host }}
-runtime_domain  : {{ runtime_domain }}
+debug               : true
+project_name        : {{ project_name }}
+
+login_user          : vagrant
+login_group         : vagrant
+login_dir           : /home/vagrant
+
+runtime_user        : www-data
+runtime_group       : www-data
+runtime_host        : {{ host }}
+runtime_venv      : /srv/virtualenvs/{{ project_name }}
+runtime_domain      : {{ runtime_domain }}
 runtime_alt_domains :
     - '*.vagrantshare.com'
-runtime_venv    : /srv/virtualenvs/{{ project_name }}
