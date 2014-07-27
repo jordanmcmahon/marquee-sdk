@@ -4,10 +4,9 @@
 from marquee_sdk.utils      import copy_template, load_config 
 from marquee_sdk.config     import (
     PROVIDERS, 
-    SLACK_CONFIG,
     PUB_KEY,
-    SERVICES,
     TEMPLATE_DIR, 
+    SLACK_CONFIG,
 )
 #from marquee_sdk.notify     import SlackClient
 from marquee_sdk.providers  import DigitalOceanClient
