@@ -1,4 +1,4 @@
-> The Marquee SDK is under active development. For production use, the [Yeoman Generator](http://github.com/marquee/generator-marquee) is preferred. 
+> Use of this repository has been depreciated. For production, use the [Yeoman Generator](http://github.com/marquee/generator-marquee). 
 
 # Introduction
 
